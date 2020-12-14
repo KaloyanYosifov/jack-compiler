@@ -1,0 +1,17 @@
+{
+    "name": "kyosifov/jack-compiler",
+    "type": "project",
+    "require": {
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kaloyan Yosifov",
+            "email": "kaloqn665@gmail.com"
+        }
+    ],
+    "require-dev": {
+        "phpstan/phpstan": "^0.12.62",
+        "friendsofphp/php-cs-fixer": "^2.17"
+    }
+}
