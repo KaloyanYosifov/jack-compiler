@@ -2,6 +2,7 @@
   "name": "kyosifov/jack-compiler",
   "type": "project",
   "require": {
+    "myclabs/php-enum": "^1.7"
   },
   "license": "MIT",
   "authors": [

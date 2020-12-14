@@ -1,0 +1,34 @@
+<?php
+
+namespace JackCompiler\Tokenizer;
+
+class TokenizedData
+{
+    protected array $tokens = [];
+    protected int $currentTokenIndex = 0;
+
+    public function __construct(array $tokens)
+    {
+        $this->tokens = $tokens;
+    }
+
+    public function nextToken(): void
+    {
+        $this->currentTokenIndex++;
+    }
+
+    public function currentToken(): ?Token
+    {
+        return $this->tokens[$this->currentTokenIndex] ?? null;
+    }
+
+    public function peekNextToken(): ?Token
+    {
+        return $this->tokens[$this->currentTokenIndex + 1] ?? null;
+    }
+
+    public function hasMoreTokens(): bool
+    {
+        return $this->currentTokenIndex >= count($this->tokens);
+    }
+}
