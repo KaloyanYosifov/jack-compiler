@@ -13,8 +13,8 @@ class TokensMap
         'if', 'else', 'while', 'return',
     ];
     protected array $symbols = [
-        '{', '}', '(', ')', '[', ']', '. ', ', ', '; ', '+', '-', '*',
-        '/', '&', ',', '<', '>', '=', '~',
+        '{', '}', '(', ')', '[', ']', '.', ',', ';', '+', '-', '*',
+        '/', '&', ',', '<', '>', '=', '~', '|',
     ];
     protected string $allowedStartCharacters = 'abcdefghijklmnopqrstuvwxyz_';
     protected string $allowedIdentifierCharacters = '';
@@ -33,6 +33,7 @@ class TokensMap
         if (in_array($token, $this->symbols, true)) {
             return TokenType::SYMBOL();
         }
+
         if (preg_match('~^".*?"$~', $token)) {
             return TokenType::STRING();
         }
@@ -54,5 +55,10 @@ class TokensMap
         }
 
         return TokenType::IDENTIFIER();
+    }
+
+    public function isSymbol(string $char): bool
+    {
+        return in_array($char, $this->symbols, true);
     }
 }

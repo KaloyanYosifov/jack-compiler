@@ -35,8 +35,22 @@ class Tokenizer
             for ($lineIndex = 0, $charactersCount = strlen($line); $lineIndex < $charactersCount; $lineIndex++) {
                 $char = $line[$lineIndex];
 
-                if ($token && $char === ' ') {
+                if ($char === ' ') {
+                    if (!$token) {
+                        continue;
+                    }
+
                     $tokens[] = new Token($this->tokensMap->getTokenType($token), $token);
+                    $token = '';
+                    continue;
+                }
+
+                if ($this->tokensMap->isSymbol($char)) {
+                    if ($token) {
+                        $tokens[] = new Token($this->tokensMap->getTokenType($token), $token);
+                    }
+
+                    $tokens[] = new Token($this->tokensMap->getTokenType($char), $char);
                     $token = '';
                     continue;
                 }
