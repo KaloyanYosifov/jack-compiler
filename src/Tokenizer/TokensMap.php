@@ -16,7 +16,13 @@ class TokensMap
         '{', '}', '(', ')', '[', ']', '. ', ', ', '; ', '+', '-', '*',
         '/', '&', ',', '<', '>', '=', '~',
     ];
-    protected string $alphabet = 'abcdefghijklmnopqrstuvwxyz';
+    protected string $allowedStartCharacters = 'abcdefghijklmnopqrstuvwxyz_';
+    protected string $allowedIdentifierCharacters = '';
+
+    public function __construct()
+    {
+        $this->allowedIdentifierCharacters = $this->allowedStartCharacters . '0123456789';
+    }
 
     public function getTokenType(string $token): TokenType
     {
@@ -35,8 +41,16 @@ class TokensMap
             return TokenType::INTEGER();
         }
 
-        if (stripos($this->alphabet, $token[0]) === false) {
+        if (stripos($this->allowedStartCharacters, $token[0]) === false) {
             throw new InvalidIdentifierName($token);
+        }
+
+        for ($i = 1, $tokenLength = strlen($token); $i < $tokenLength; $i++) {
+            $tokenChar = $token[$i];
+
+            if (stripos($this->allowedIdentifierCharacters, $tokenChar) === false) {
+                throw new InvalidIdentifierName($token);
+            }
         }
 
         return TokenType::IDENTIFIER();
