@@ -1,0 +1,68 @@
+#! /usr/bin/env bash
+
+PROJECT_PATH="$(pwd)"
+reset=`tput sgr0`
+green=`tput setaf 2`
+red=`tput setaf 1`
+
+# since script runs in hooks we check if we have pre-push script in current directory
+# if that is go to project path
+if [ -f "$PROJECT_PATH/pre-push" ]; then
+    PROJECT_PATH="$PROJECT_PATH/../../"
+fi
+
+cd $PROJECT_PATH
+
+function fix_main_files() {
+    OLD_IFS=$IFS
+    # change to space internal field separator
+    # as the output from cs fixer comes in one lined separated with spaces
+    IFS=" "
+    FILES_TO_ADD_TO_GIT=""
+
+    while read CHANGED_FILE; do
+        if [[ "$CHANGED_FILE" =~ ^.+(php)$ ]]; then
+            FILES_TO_ADD_TO_GIT="$(echo $CHANGED_FILE | sed 's/[^ ]* //')"
+        fi
+    done <<<$(./vendor/bin/php-cs-fixer fix)
+    IFS=$IFS
+
+    echo $FILES_TO_ADD_TO_GIT
+}
+
+function fix_test_files() {
+    OLD_IFS=$IFS
+    # change to space internal field separator
+    # as the output from cs fixer comes in one lined separated with spaces
+    IFS=" "
+    FILES_TO_ADD_TO_GIT=""
+
+    while read CHANGED_FILE; do
+        if [[ "$CHANGED_FILE" =~ ^.+(php)$ ]]; then
+            FILES_TO_ADD_TO_GIT="$(echo $CHANGED_FILE | sed 's/[^ ]* //')"
+        fi
+    done <<<$(./vendor/bin/php-cs-fixer fix --config=.php_cs.tests.php)
+    IFS=$IFS
+
+    echo $FILES_TO_ADD_TO_GIT
+}
+
+git diff --cached --name-only | while read FILE; do
+if [[ "$FILE" =~ ^.+(php)$ ]]; then
+      echo "Running php cs fixer"
+    FILES_TO_ADD_TO_GIT_FROM_MAIN_CS_FIX=$(fix_main_files)
+    FILES_TO_ADD_TO_GIT_FROM_TEST_CS_FIX=$(fix_test_files)
+
+    if [[ $FILES_TO_ADD_TO_GIT_FROM_MAIN_CS_FIX != "" ]]; then
+      git add $FILES_TO_ADD_TO_GIT_FROM_MAIN_CS_FIX
+    fi
+
+    if [[ $FILES_TO_ADD_TO_GIT_FROM_TEST_CS_FIX != "" ]]; then
+      git add $FILES_TO_ADD_TO_GIT_FROM_TEST_CS_FIX
+    fi
+
+
+    # exit the program with a good status as we do not want to loop all files
+    exit 0
+fi
+done || exit $?

@@ -1,0 +1,28 @@
+#! /usr/bin/env bash
+
+PROJECT_PATH="$(pwd)"
+reset=`tput sgr0`
+green=`tput setaf 2`
+red=`tput setaf 1`
+
+# since script runs in hooks we check if we have pre-push script in current directory
+# if that is go to project path
+if [ -f "$PROJECT_PATH/pre-push" ]; then
+    PROJECT_PATH="$PROJECT_PATH/../../"
+fi
+
+cd $PROJECT_PATH
+
+git show --pretty="" --name-only $(git log --format="%H" -n 1) | while read FILE; do
+if [[ "$FILE" =~ ^.+(php|inc|module|install|test)$ ]]; then
+    echo "Running phpstan"
+    ./vendor/bin/phpstan analyse
+
+    if [ $? -ne 0 ]; then
+      echo "${red}It seems phpstan has found some errors. Run "./vendor/bin/phpstan analyse to check them out if you do not see them here"${reset}"
+      exit 1;
+    fi
+
+    exit 0
+fi
+done || exit $?
