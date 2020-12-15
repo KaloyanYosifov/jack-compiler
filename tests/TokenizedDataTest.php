@@ -33,3 +33,30 @@ it('advances to next token', function () {
     expect($tokenizedData->currentToken())
         ->toBeNull();
 });
+
+it('can peek next token', function () {
+    $tokens = [
+        new Token(TokenType::KEYWORD(), 'value'),
+        new Token(TokenType::IDENTIFIER(), 'something'),
+    ];
+    $tokenizedData = new TokenizedData($tokens);
+
+    expect($tokenizedData->currentToken()->getType()->getValue())
+        ->toBe(TokenType::KEYWORD()->getValue());
+
+    expect($tokenizedData->peekNextToken()->getType()->getValue())
+        ->toBe(TokenType::IDENTIFIER()->getValue());
+
+    expect($tokenizedData->currentToken()->getType()->getValue())
+        ->toBe(TokenType::KEYWORD()->getValue());
+});
+
+it('returns null if there is no token left to peek', function () {
+    $tokens = [
+        new Token(TokenType::KEYWORD(), 'value'),
+    ];
+    $tokenizedData = new TokenizedData($tokens);
+
+    expect($tokenizedData->peekNextToken())
+        ->toBeNull();
+});

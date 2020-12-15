@@ -1,11 +1,11 @@
 <?php
 
-namespace JackCompiler;
+namespace JackCompiler\Tokenizer;
 
 class Tokenizer
 {
-    public function handle(string $data)
+    public function handle(string $data): string
     {
-
-     }
+        return '';
+    }
 }

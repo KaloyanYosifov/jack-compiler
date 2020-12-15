@@ -10,6 +10,7 @@ use MyCLabs\Enum\Enum;
  * @method static TokenType INTEGER()
  * @method static TokenType STRING()
  * @method static TokenType IDENTIFIER()
+ * @extends Enum<string>
  */
 class TokenType extends Enum
 {

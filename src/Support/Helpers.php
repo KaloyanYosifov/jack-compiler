@@ -51,7 +51,7 @@ class Helpers
 
         // if the directory ends with .
         // this will remove it
-        $directory = preg_replace('~\.$~', '', $directory);
+        $directory = (string) preg_replace('~\.$~', '', $directory);
         $filesMatchingExtension = [];
 
         // if the directory doesnt have an ending separator
