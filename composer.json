@@ -2,7 +2,8 @@
   "name": "kyosifov/jack-compiler",
   "type": "project",
   "require": {
-    "myclabs/php-enum": "^1.7"
+    "myclabs/php-enum": "^1.7",
+    "symfony/polyfill-php80": "^1.20"
   },
   "license": "MIT",
   "authors": [
@@ -14,7 +15,8 @@
   "require-dev": {
     "phpstan/phpstan": "^0.12.62",
     "friendsofphp/php-cs-fixer": "^2.17",
-    "pestphp/pest": "^0.3.16"
+    "pestphp/pest": "^0.3.16",
+    "symfony/var-dumper": "^5.2"
   },
   "autoload": {
     "psr-4": {
