@@ -12,3 +12,24 @@ it('shows if it has more tokens', function () {
 
     expect($tokenizedData->hasMoreTokens())->toBeFalse();
 });
+
+it('advances to next token', function () {
+    $tokens = [
+        new Token(TokenType::KEYWORD(), 'value'),
+        new Token(TokenType::IDENTIFIER(), 'something'),
+    ];
+    $tokenizedData = new TokenizedData($tokens);
+
+    expect($tokenizedData->currentToken()->getType()->getValue())
+        ->toBe(TokenType::KEYWORD()->getValue());
+
+    $tokenizedData->nextToken();
+
+    expect($tokenizedData->currentToken()->getType()->getValue())
+        ->toBe(TokenType::IDENTIFIER()->getValue());
+
+    $tokenizedData->nextToken();
+
+    expect($tokenizedData->currentToken())
+        ->toBeNull();
+});

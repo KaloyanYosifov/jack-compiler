@@ -12,9 +12,11 @@ class TokenizedData
         $this->tokens = $tokens;
     }
 
-    public function nextToken(): void
+    public function nextToken(): self
     {
         $this->currentTokenIndex++;
+
+        return $this;
     }
 
     public function currentToken(): ?Token
