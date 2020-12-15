@@ -3,6 +3,7 @@
 use JackCompiler\Support\Helpers;
 use JackCompiler\Reader\FileReader;
 use JackCompiler\Tokenizer\Tokenizer;
+use JackCompiler\Tokenizer\TokensMap;
 
 if (php_sapi_name() !== PHP_SAPI) {
     echo 'Please run this in the command line!';
@@ -37,7 +38,7 @@ if (file_exists($generatedFileName)) {
     unlink($generatedFileName);
 }
 
-$tokenizer = new Tokenizer(new FileReader());
+$tokenizer = new Tokenizer(new FileReader(), new TokensMap());
 foreach ($files as $file) {
     $tokenizer->handle($file);
 }

@@ -10,14 +10,20 @@ class Tokenizer
      * @var FileReader
      */
     protected FileReader $fileReader;
+    /**
+     * @var TokensMap
+     */
+    protected TokensMap $tokensMap;
 
     /**
      * Tokenizer constructor.
      * @param FileReader $fileReader
+     * @param TokensMap $tokensMap
      */
-    public function __construct(FileReader $fileReader)
+    public function __construct(FileReader $fileReader, TokensMap $tokensMap)
     {
         $this->fileReader = $fileReader;
+        $this->tokensMap = $tokensMap;
     }
 
     public function handle(string $filename): TokenizedData
@@ -30,15 +36,15 @@ class Tokenizer
                 $char = $line[$lineIndex];
 
                 if ($token && $char === ' ') {
-                    $tokens[] = new Token($this->getTokenType($token), $token);
+                    $tokens[] = new Token($this->tokensMap->getTokenType($token), $token);
+                    $token = '';
+                    continue;
                 }
+
+                $token .= $char;
             }
         }
 
         return new TokenizedData($tokens);
-    }
-
-    protected function getTokenType(string $token): TokenType
-    {
     }
 }
