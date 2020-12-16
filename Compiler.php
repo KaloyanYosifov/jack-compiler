@@ -41,5 +41,5 @@ if (file_exists($generatedFileName)) {
 
 $tokenizer = new Tokenizer(new FileReader(), new TokensMap());
 foreach ($files as $file) {
-    (new TokenXMLExporter($tokenizer->handle($file)))->export($generatedFileName);
+    (new TokenXMLExporter($tokenizer->handle($file)))->exportToFile($generatedFileName);
 }

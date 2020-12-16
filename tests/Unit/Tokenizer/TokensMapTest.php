@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\JackCompiler\Tokenizer;
+namespace Tests\Unit\Tokenizer;
 
 use JackCompiler\Tokenizer\TokensMap;
 use JackCompiler\Tokenizer\TokenType;
@@ -19,13 +19,13 @@ $symbols = [
 
 it(
     'returns keyword if it matches',
-    fn (string $keyword) => expect((new TokensMap())->getTokenType($keyword)->getValue())->toBe(TokenType::KEYWORD()->getValue())
+    fn(string $keyword) => expect((new TokensMap())->getTokenType($keyword)->getValue())->toBe(TokenType::KEYWORD()->getValue())
 )
     ->with($keywords);
 
 it(
     'returns symbol if it matches',
-    fn (string $symbol) => expect((new TokensMap())->getTokenType($symbol)->getValue())->toBe(TokenType::SYMBOL()->getValue())
+    fn(string $symbol) => expect((new TokensMap())->getTokenType($symbol)->getValue())->toBe(TokenType::SYMBOL()->getValue())
 )
     ->with($symbols);
 
@@ -41,7 +41,7 @@ it('returns identifier if it matches', function () {
     $this->assertEquals((new TokensMap())->getTokenType('classDateMate')->getValue(), TokenType::IDENTIFIER()->getValue());
 });
 
-it('throws an error if identifier is invalid', fn (string $variableName) => (new TokensMap())->getTokenType($variableName))
+it('throws an error if identifier is invalid', fn(string $variableName) => (new TokensMap())->getTokenType($variableName))
     ->with([
         '$classMate',
         '1classMate',

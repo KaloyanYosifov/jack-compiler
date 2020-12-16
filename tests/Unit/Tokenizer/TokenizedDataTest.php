@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\JackCompiler\Tokenizer;
+namespace Tests\Unit\Tokenizer;
 
 use JackCompiler\Tokenizer\Token;
 use JackCompiler\Tokenizer\TokenType;

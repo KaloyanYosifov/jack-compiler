@@ -14,7 +14,7 @@ class TokenXMLExporter
         $this->tokenizedData = $tokenizedData;
     }
 
-    public function export(string $filename): void
+    public function export(): string
     {
         $xml = new \SimpleXMLElement('<tokens/>');
 
@@ -34,10 +34,17 @@ class TokenXMLExporter
         $dom->formatOutput = true;
         $dom->loadXML((string) $xml->asXML());
 
+        $xml = '';
+
         foreach ($dom->childNodes as $childNode) {
             $xml .= $dom->saveXML($childNode);
         }
 
-        file_put_contents($filename, $xml);
+        return $xml;
+    }
+
+    public function exportToFile(string $filename): void
+    {
+        file_put_contents($filename, $this->export());
     }
 }
