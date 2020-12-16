@@ -12,6 +12,13 @@ class TokenizedData
         $this->tokens = $tokens;
     }
 
+    public function reset(): self
+    {
+        $this->currentTokenIndex = 0;
+
+        return $this;
+    }
+
     public function nextToken(): self
     {
         $this->currentTokenIndex++;
@@ -31,6 +38,6 @@ class TokenizedData
 
     public function hasMoreTokens(): bool
     {
-        return $this->currentTokenIndex >= count($this->tokens);
+        return $this->currentTokenIndex < count($this->tokens);
     }
 }
