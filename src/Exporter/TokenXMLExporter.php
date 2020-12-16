@@ -32,7 +32,7 @@ class TokenXMLExporter
         $dom = new \DOMDocument('1.0');
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = true;
-        $dom->loadXML($xml->asXML());
+        $dom->loadXML((string) $xml->asXML());
 
         foreach ($dom->childNodes as $childNode) {
             $xml .= $dom->saveXML($childNode);
