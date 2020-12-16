@@ -2,8 +2,6 @@
 
 namespace Tests\Unit\Tokenizer;
 
-use Tests\Setup\XmlDiff;
-use Tests\Setup\FineDiff;
 use JackCompiler\Reader\FileReader;
 use JackCompiler\Tokenizer\Tokenizer;
 use JackCompiler\Tokenizer\TokensMap;
