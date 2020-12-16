@@ -15,6 +15,6 @@ class CompileEngine
 
     public function compile(): string
     {
-
+        return '';
     }
 }
