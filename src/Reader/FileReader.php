@@ -22,7 +22,7 @@ class FileReader
 
             // skip line
             // since it is a comment
-            if (preg_match('~^//|/\*\*~', $line)) {
+            if (preg_match('~^(//|/\*\*)~', $line)) {
                 continue;
             }
 

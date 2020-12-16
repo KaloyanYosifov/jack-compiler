@@ -57,6 +57,10 @@ class Tokenizer
 
                 $token .= $char;
             }
+
+            if ($token) {
+                $tokens[] = new Token($this->tokensMap->getTokenType($token), $token);
+            }
         }
 
         return new TokenizedData($tokens);
