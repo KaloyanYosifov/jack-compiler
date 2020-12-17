@@ -3,8 +3,10 @@
 namespace JackCompiler\CompileEngine\Compilations;
 
 use JackCompiler\Tokenizer\TokenizedData;
+use JackCompiler\CompileEngine\CompilationType;
+use JackCompiler\CompileEngine\ComplexCompiledData;
 
-class ClassCompilation
+class ClassCompilation implements Compilation
 {
     /**
      * @var TokenizedData
@@ -16,8 +18,15 @@ class ClassCompilation
         $this->tokenizedData = $tokenizedData;
     }
 
-    public function compile()
+    public function compile(): ComplexCompiledData
     {
+        $complexCompiledData = new ComplexCompiledData($this->getCompilationType());
 
+        return $complexCompiledData;
+    }
+
+    public function getCompilationType(): CompilationType
+    {
+        return CompilationType::START_CLASS();
     }
 }

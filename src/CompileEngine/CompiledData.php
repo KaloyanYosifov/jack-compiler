@@ -4,7 +4,12 @@ namespace JackCompiler\CompileEngine;
 
 class CompiledData
 {
-    public function __construct()
+    protected CompilationType $type;
+    protected string $value;
+
+    public function __construct(CompilationType $type, string $value)
     {
+        $this->type = $type;
+        $this->value = $value;
     }
 }
