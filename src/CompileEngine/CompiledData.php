@@ -12,4 +12,14 @@ class CompiledData
         $this->type = $type;
         $this->value = $value;
     }
+
+    public function getValue(): string
+    {
+        return $this->value;
+    }
+
+    public function getType(): CompilationType
+    {
+        return $this->type;
+    }
 }
