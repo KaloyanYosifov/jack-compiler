@@ -2,6 +2,12 @@
 
 namespace JackCompiler\CompileEngine;
 
+/**
+ * Class ComplexCompiledData
+ * @package JackCompiler\CompileEngine
+ *
+ * @implements \IteratorAggregate<int, ComplexCompiledData|CompiledData>
+ */
 class ComplexCompiledData implements \IteratorAggregate
 {
     protected CompilationType $type;
@@ -48,15 +54,5 @@ class ComplexCompiledData implements \IteratorAggregate
     public function getIterator()
     {
         return new \ArrayIterator($this->data);
-    }
-
-    public function offsetSet($offset, $value): void
-    {
-        throw new \LogicException('Overriding compile data is not allowed!');
-    }
-
-    public function offsetUnset($offset): void
-    {
-        throw new \LogicException('Overriding compile data is not allowed!');
     }
 }
