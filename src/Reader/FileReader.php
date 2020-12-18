@@ -2,10 +2,18 @@
 
 namespace JackCompiler\Reader;
 
+use JackCompiler\Parsers\LineParser;
 use JackCompiler\Exceptions\FileNotFound;
 
 class FileReader
 {
+    protected LineParser $lineParser;
+
+    public function __construct(LineParser $lineParser)
+    {
+        $this->lineParser = $lineParser;
+    }
+
     public function readFile(string $filename): \Generator
     {
         if (!file_exists($filename)) {
@@ -18,30 +26,8 @@ class FileReader
         $file = fopen($filename, 'rb');
 
         while ($line = fgets($file, 4096)) {
-            $line = trim($line);
+            $line = $this->lineParser->handle($line);
 
-            // skip line
-            // since it is a comment
-            if (preg_match('~^(//|/\*\*)~', $line)) {
-                continue;
-            }
-
-            $inlineCommentsToRemove = [
-                '//',
-                '/**',
-                '/*',
-            ];
-
-            foreach ($inlineCommentsToRemove as $inlineCommentToRemove) {
-                // remove comment from line if it doesnt start with it
-                if (($foundCommentPos = strpos($line, $inlineCommentToRemove)) !== false) {
-                    $line = substr_replace($line, '', $foundCommentPos);
-                }
-            }
-
-            $line = trim($line);
-
-            // skip empty line
             if (!$line) {
                 continue;
             }
