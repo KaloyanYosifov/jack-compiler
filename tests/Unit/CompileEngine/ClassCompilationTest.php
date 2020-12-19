@@ -29,7 +29,7 @@ it('compiles a class declaration', function () {
 });
 
 it('compiles the classVarDec', function () {
-    $classImplementation = 'class JackClass { field int dataScience, kloshar; }';
+    $classImplementation = 'class JackClass { field int dataScience; }';
     $tokenizedData = Tokenizer::create()->handleStringData($classImplementation);
     $compiledData = ClassCompilation::create()->compile($tokenizedData);
 
