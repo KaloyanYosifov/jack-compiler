@@ -46,7 +46,7 @@ class CompilationTokenExpector
             }
 
             if (!in_array($currentToken->getValue(), $expectedValues)) {
-                throw new InvalidSyntaxError('Expected: ' . $expectedValue . ' got :' . $currentToken->getValue());
+                throw new InvalidSyntaxError('Expected "' . $expectedValue . '" got "' . $currentToken->getValue() . '"');
             }
         }
 

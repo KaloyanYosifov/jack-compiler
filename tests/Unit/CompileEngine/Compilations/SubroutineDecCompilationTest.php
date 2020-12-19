@@ -22,10 +22,8 @@ it('compiles a subroutine dec', function () {
     assertComplexCompiledData($compiledData, 0, CompilationType::KEYWORD(), 'method');
     assertComplexCompiledData($compiledData, 1, CompilationType::KEYWORD(), 'void');
     assertComplexCompiledData($compiledData, 2, CompilationType::IDENTIFIER(), 'testing');
-    assertComplexCompiledData($compiledData, 4, CompilationType::SYMBOL(), '(');
-    assertComplexCompiledData($compiledData, 5, CompilationType::SYMBOL(), ')');
-    assertComplexCompiledData($compiledData, 6, CompilationType::SYMBOL(), '{');
-    assertComplexCompiledData($compiledData, 7, CompilationType::SYMBOL(), '}');
-
-    $this->assertNull($compiledData->getDataFrom(4));
+    assertComplexCompiledData($compiledData, 3, CompilationType::SYMBOL(), '(');
+    assertComplexCompiledData($compiledData, 4, CompilationType::SYMBOL(), ')');
+    assertComplexCompiledData($compiledData, 5, CompilationType::SYMBOL(), '{');
+    assertComplexCompiledData($compiledData, 6, CompilationType::SYMBOL(), '}');
 });
