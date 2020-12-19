@@ -4,6 +4,7 @@ namespace Tests\Unit\CompileEngine\Compilations;
 
 use JackCompiler\Tokenizer\Tokenizer;
 use JackCompiler\CompileEngine\CompilationType;
+use JackCompiler\Exceptions\InvalidSyntaxError;
 use JackCompiler\CompileEngine\Compilations\ClassCompilation;
 
 use function Tests\assertComplexCompiledData;
@@ -31,3 +32,13 @@ it('compiles the classVarDec', function () {
     $this->assertNotNull($classVarDecCompiledData = $compiledData->getDataFrom(3));
     $this->assertTrue(CompilationType::CLASS_VAR_DEC()->equals($classVarDecCompiledData->getType()));
 });
+
+it('throws a syntax error', function (string $implementation) {
+    $this->expectException(InvalidSyntaxError::class);
+    $tokenizedData = Tokenizer::create()->handleStringData($implementation);
+    ClassCompilation::create()->compile($tokenizedData);
+})
+    ->with([
+        'class {}',
+        'hacker JackClass { }',
+    ]);

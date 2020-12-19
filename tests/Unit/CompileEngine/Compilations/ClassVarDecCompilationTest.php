@@ -4,6 +4,7 @@ namespace Tests\Unit\CompileEngine\Compilations;
 
 use JackCompiler\Tokenizer\Tokenizer;
 use JackCompiler\CompileEngine\CompilationType;
+use JackCompiler\Exceptions\InvalidSyntaxError;
 use JackCompiler\CompileEngine\Compilations\ClassVarDecCompilation;
 
 use function Tests\assertComplexCompiledData;
@@ -29,3 +30,15 @@ it('compiles a class var declaration', function () {
     assertComplexCompiledData($nextClassVarCompiledData, 4, CompilationType::IDENTIFIER(), 'hackTest');
     assertComplexCompiledData($nextClassVarCompiledData, 5, CompilationType::SYMBOL(), ';');
 });
+
+it('throws a syntax error', function (string $implementation) {
+    $this->expectException(InvalidSyntaxError::class);
+    $tokenizedData = Tokenizer::create()->handleStringData($implementation);
+    ClassVarDecCompilation::create()->compile($tokenizedData);
+})
+    ->with([
+        'field helloThere;',
+        'field helloThere fast;',
+        'method helloThere fast;',
+        'static;',
+    ]);
