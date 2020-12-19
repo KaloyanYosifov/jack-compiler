@@ -27,3 +27,12 @@ it('compiles a class declaration', function () {
 
     $this->assertNull($compiledData->getDataFrom(4));
 });
+
+it('compiles the classVarDec', function () {
+    $classImplementation = 'class JackClass { field int dataScience, kloshar; }';
+    $tokenizedData = Tokenizer::create()->handleStringData($classImplementation);
+    $compiledData = ClassCompilation::create()->compile($tokenizedData);
+
+    $this->assertNotNull($classVarDecCompiledData = $compiledData->getDataFrom(3));
+    $this->assertTrue(CompilationType::CLASS_VAR_DEC()->equals($classVarDecCompiledData->getType()));
+});
