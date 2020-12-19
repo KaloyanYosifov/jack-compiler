@@ -2,35 +2,29 @@
 
 namespace JackCompiler\CompileEngine\Compilations;
 
-use JackCompiler\Tokenizer\TokenType;
 use JackCompiler\Tokenizer\TokenizedData;
 use JackCompiler\CompileEngine\CompilationType;
 use JackCompiler\CompileEngine\ComplexCompiledData;
 use JackCompiler\CompileEngine\CompilationTokenExpector;
 
-class ClassVarDecCompilation extends AbstractCompilation
+class ParameterListCompilation extends AbstractCompilation
 {
     public function compile(TokenizedData $tokenizedData): ComplexCompiledData
     {
         $this->init($tokenizedData, new ComplexCompiledData($this->getCompilationType()));
 
-        $this->eat(CompilationType::KEYWORD(), TokenType::KEYWORD(), 'field|static');
+        $parametersCompilation = VariablesCompilation::create(true)->compile($tokenizedData);
 
-        // since variables compilation cannot work alone we add their compiled data to this one
-        $complexCompiledData = VariablesCompilation::create()->compile($tokenizedData);
-
-        foreach ($complexCompiledData as $compiledData) {
-            $this->add($compiledData);
+        foreach ($parametersCompilation as $parameterData) {
+            $this->add($parameterData);
         }
-
-        $this->eat(CompilationType::SYMBOL(), TokenType::SYMBOL(), ';');
 
         return $this->getComplexCompiledData();
     }
 
     public function getCompilationType(): CompilationType
     {
-        return CompilationType::CLASS_VAR_DEC();
+        return CompilationType::PARAMETER_LIST();
     }
 
     public static function create(): self

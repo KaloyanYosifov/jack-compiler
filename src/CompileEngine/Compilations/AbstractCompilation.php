@@ -31,6 +31,13 @@ abstract class AbstractCompilation implements Compilation
         $this->currentComplexCompiledData = $complexCompiledData;
     }
 
+    /**
+     * @param CompilationType $compilationType
+     * @param TokenType $tokenType
+     * @param string $expectedValue
+     * @return $this
+     * @throws \JackCompiler\Exceptions\InvalidSyntaxError
+     */
     protected function eat(CompilationType $compilationType, TokenType $tokenType, string $expectedValue = ''): self
     {
         if (!$this->currentComplexCompiledData || !$this->currentTokenizedData) {
@@ -51,7 +58,6 @@ abstract class AbstractCompilation implements Compilation
     /**
      * @param ComplexCompiledData|CompiledData $compiledData
      * @return $this
-     * @throws \JackCompiler\Exceptions\InvalidSyntaxError
      */
     protected function add($compiledData): self
     {

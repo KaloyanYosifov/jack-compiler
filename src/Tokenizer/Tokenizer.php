@@ -102,6 +102,12 @@ class Tokenizer
             $token .= $char;
         }
 
+        // if we have a token left
+        // add it to tokens found
+        if ($token) {
+            $tokensFound[] = $token;
+        }
+
         return $tokensFound;
     }
 }

@@ -38,7 +38,5 @@ it('throws a syntax error', function (string $implementation) {
 })
     ->with([
         'field helloThere;',
-        'field helloThere fast;',
-        'method helloThere fast;',
         'static;',
     ]);
