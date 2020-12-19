@@ -18,9 +18,16 @@ class ClassCompilation extends AbstractCompilation
         $this->eat(CompilationType::IDENTIFIER(), TokenType::IDENTIFIER());
         $this->eat(CompilationType::SYMBOL(), TokenType::SYMBOL(), '{');
 
-        $currentToken = $this->getCurrentToken();
-        if ($currentToken && in_array($currentToken->getValue(), ['field', 'static'])) {
-            $this->add(ClassVarDecCompilation::create()->compile($tokenizedData));
+        while ($currentToken = $this->getCurrentToken()) {
+            // while we have a token
+            // check if we have some of the decs
+            if (in_array($currentToken->getValue(), ['field', 'static'])) {
+                $this->add(ClassVarDecCompilation::create()->compile($tokenizedData));
+
+                continue;
+            }
+
+            break;
         }
 
         $this->eat(CompilationType::SYMBOL(), TokenType::SYMBOL(), '}');
