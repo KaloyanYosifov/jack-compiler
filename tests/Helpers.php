@@ -16,8 +16,11 @@ function assertComplexCompiledData(
     ComplexCompiledData $complexCompiledData,
     int $dataIndex,
     CompilationType $compilationType,
-    string $expectedValue
+    string $expectedValue = null
 ) {
     expect($compilationType->equals($complexCompiledData->getDataFrom($dataIndex)->getType()))->toBeTrue();
-    expect($expectedValue)->toEqual($complexCompiledData->getDataFrom($dataIndex)->getValue());
+
+    if (!is_null($expectedValue)) {
+        expect($expectedValue)->toEqual($complexCompiledData->getDataFrom($dataIndex)->getValue());
+    }
 }
