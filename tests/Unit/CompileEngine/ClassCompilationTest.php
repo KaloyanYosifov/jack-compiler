@@ -9,7 +9,7 @@ use JackCompiler\CompileEngine\Compilations\ClassCompilation;
 it('compiles a class declaration', function () {
     $classImplementation = 'class JackClass { }';
     $tokenizedData = Tokenizer::create()->handleStringData($classImplementation);
-    $compiledData = ClassCompilation::create($tokenizedData)->compile();
+    $compiledData = ClassCompilation::create()->compile($tokenizedData);
 
     $this->assertTrue(CompilationType::START_CLASS()->equals($compiledData->getType()));
 

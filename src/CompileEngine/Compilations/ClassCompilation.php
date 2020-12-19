@@ -11,48 +11,26 @@ use JackCompiler\CompileEngine\CompilationTokenExpector;
 
 class ClassCompilation implements Compilation
 {
-    protected TokenizedData $tokenizedData;
+    protected ?TokenizedData $currentTokenizedData = null;
+    protected ?ComplexCompiledData $currentComplexCompiledData = null;
     protected CompilationTokenExpector $compilationTokenExpector;
 
-    public function __construct(TokenizedData $tokenizedData, CompilationTokenExpector $compilationTokenExpector)
+    public function __construct(CompilationTokenExpector $compilationTokenExpector)
     {
-        $this->tokenizedData = $tokenizedData;
         $this->compilationTokenExpector = $compilationTokenExpector;
     }
 
-    public function compile(): ComplexCompiledData
+    public function compile(TokenizedData $tokenizedData): ComplexCompiledData
     {
-        $complexCompiledData = new ComplexCompiledData($this->getCompilationType());
-        $complexCompiledData->add(
-            new CompiledData(
-                CompilationType::KEYWORD(),
-                $this->compilationTokenExpector->expect($this->tokenizedData, TokenType::KEYWORD(), 'class')
-            )
-        );
-        $this->tokenizedData->nextToken();
-        $complexCompiledData->add(
-            new CompiledData(
-                CompilationType::IDENTIFIER(),
-                $this->compilationTokenExpector->expect($this->tokenizedData, TokenType::IDENTIFIER())
-            )
-        );
-        $this->tokenizedData->nextToken();
-        $complexCompiledData->add(
-            new CompiledData(
-                CompilationType::SYMBOL(),
-                $this->compilationTokenExpector->expect($this->tokenizedData, TokenType::SYMBOL(), '{')
-            )
-        );
-        $this->tokenizedData->nextToken();
-        $complexCompiledData->add(
-            new CompiledData(
-                CompilationType::SYMBOL(),
-                $this->compilationTokenExpector->expect($this->tokenizedData, TokenType::SYMBOL(), '}')
-            )
-        );
-        $this->tokenizedData->nextToken();
+        $this->currentComplexCompiledData = new ComplexCompiledData($this->getCompilationType());
+        $this->currentTokenizedData = $tokenizedData;
 
-        return $complexCompiledData;
+        $this->eat(CompilationType::KEYWORD(), TokenType::KEYWORD(), 'class');
+        $this->eat(CompilationType::IDENTIFIER(), TokenType::IDENTIFIER());
+        $this->eat(CompilationType::SYMBOL(), TokenType::SYMBOL(), '{');
+        $this->eat(CompilationType::SYMBOL(), TokenType::SYMBOL(), '}');
+
+        return $this->currentComplexCompiledData;
     }
 
     public function getCompilationType(): CompilationType
@@ -60,8 +38,31 @@ class ClassCompilation implements Compilation
         return CompilationType::START_CLASS();
     }
 
-    public static function create(TokenizedData $tokenizedData): self
+    private function eat(CompilationType $compilationType, TokenType $tokenType, string $expectedValue = ''): self
     {
-        return new self($tokenizedData, new CompilationTokenExpector());
+        if (!$this->currentComplexCompiledData || !$this->currentTokenizedData) {
+            throw new \LogicException('This method should be called after initializing tokenized data and complex compiled data!');
+        }
+
+        $this->currentComplexCompiledData->add(
+            new CompiledData(
+                $compilationType,
+                $this->compilationTokenExpector->expect($this->currentTokenizedData, $tokenType, $expectedValue)
+            )
+        );
+        $this->currentTokenizedData->nextToken();
+
+        return $this;
+    }
+
+    public function __destruct()
+    {
+        $this->currentTokenizedData = null;
+        $this->currentComplexCompiledData = null;
+    }
+
+    public static function create(): self
+    {
+        return new self(new CompilationTokenExpector());
     }
 }
