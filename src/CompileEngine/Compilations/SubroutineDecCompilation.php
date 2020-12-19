@@ -8,6 +8,7 @@ use JackCompiler\CompileEngine\CompilationType;
 use JackCompiler\Exceptions\InvalidSyntaxError;
 use JackCompiler\CompileEngine\ComplexCompiledData;
 use JackCompiler\CompileEngine\CompilationTokenExpector;
+use JackCompiler\CompileEngine\Compilations\Constants\CompilationConstants;
 
 class SubroutineDecCompilation extends AbstractCompilation
 {
@@ -15,8 +16,8 @@ class SubroutineDecCompilation extends AbstractCompilation
     {
         $this->init($tokenizedData, new ComplexCompiledData($this->getCompilationType()));
 
-        $this->eat(CompilationType::KEYWORD(), TokenType::KEYWORD(), 'field|static');
-        $this->eat(CompilationType::KEYWORD(), TokenType::KEYWORD(), 'int|char|boolean');
+        $this->eat(CompilationType::KEYWORD(), TokenType::KEYWORD(), 'method|constructor|function');
+        $this->eat(CompilationType::KEYWORD(), TokenType::KEYWORD(), CompilationConstants::VAR_TYPES);
         $this->eat(CompilationType::IDENTIFIER(), TokenType::IDENTIFIER());
 
         $this->initMoreDecs();

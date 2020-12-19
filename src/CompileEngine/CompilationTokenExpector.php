@@ -31,7 +31,13 @@ class CompilationTokenExpector
             throw new InvalidSyntaxError('Expected: ' . $tokenType->getValue() . ' got :' . $currentToken->getType()->getValue());
         }
 
-        if ($expectedValue) {
+        // we check if we have an expected value and
+        // we also check if we are using a keyword and the expect value contains className
+        // if that is the case we skip the if condition as className can be any type
+        if (
+            $expectedValue &&
+            !(str_contains($expectedValue, 'className') && $tokenType->equals(TokenType::KEYWORD()))
+        ) {
             // we can check multiple values like "field|static"
             // so we need to create an array to accept that
             $expectedValues = [$expectedValue];
