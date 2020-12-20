@@ -76,7 +76,7 @@ abstract class AbstractCompilation implements Compilation
             throw new \LogicException('This method should be called after initializing tokenized data and complex compiled data!');
         }
 
-        return $this->currentTokenizedData->currentToken();
+        return $this->currentTokenizedData->peekNextToken();
     }
 
     protected function getCurrentToken(): ?Token

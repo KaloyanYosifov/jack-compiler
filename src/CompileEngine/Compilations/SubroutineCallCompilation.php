@@ -29,6 +29,7 @@ class SubroutineCallCompilation extends AbstractCompilation
         }
 
         $this->eat(CompilationType::SYMBOL(), TokenType::SYMBOL(), '(');
+        $this->add(ExpressionListCompilation::create()->compile($tokenizedData));
         $this->eat(CompilationType::SYMBOL(), TokenType::SYMBOL(), ')');
 
         return $this->getComplexCompiledData();

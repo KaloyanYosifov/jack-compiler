@@ -11,22 +11,23 @@ use JackCompiler\CompileEngine\Compilations\SubroutineCallCompilation;
 use function Tests\assertComplexCompiledData;
 
 it('compiles a subroutine call declaration', function () {
-    $classImplementation = 'test()';
-    $tokenizedData = Tokenizer::create()->handleStringData($classImplementation);
+    $implementation = 'test()';
+    $tokenizedData = Tokenizer::create()->handleStringData($implementation);
     $compiledData = SubroutineCallCompilation::create()->compile($tokenizedData);
 
     $this->assertTrue(CompilationType::SUBROUTINE_CALL()->equals($compiledData->getType()));
 
     assertComplexCompiledData($compiledData, 0, CompilationType::IDENTIFIER(), 'test');
     assertComplexCompiledData($compiledData, 1, CompilationType::SYMBOL(), '(');
-    assertComplexCompiledData($compiledData, 2, CompilationType::SYMBOL(), ')');
+    assertComplexCompiledData($compiledData, 2, CompilationType::EXPRESSION_LIST());
+    assertComplexCompiledData($compiledData, 3, CompilationType::SYMBOL(), ')');
 
-    $this->assertNull($compiledData->getDataFrom(3));
+    $this->assertNull($compiledData->getDataFrom(4));
 });
 
-it('compiles a subroutine class call decleration', function () {
-    $classImplementation = 'JackClass.helloWorld()';
-    $tokenizedData = Tokenizer::create()->handleStringData($classImplementation);
+it('compiles a subroutine class call declaration', function () {
+    $implementation = 'JackClass.helloWorld()';
+    $tokenizedData = Tokenizer::create()->handleStringData($implementation);
     $compiledData = SubroutineCallCompilation::create()->compile($tokenizedData);
 
     $this->assertTrue(CompilationType::SUBROUTINE_CALL()->equals($compiledData->getType()));
@@ -35,9 +36,23 @@ it('compiles a subroutine class call decleration', function () {
     assertComplexCompiledData($compiledData, 1, CompilationType::SYMBOL(), '.');
     assertComplexCompiledData($compiledData, 2, CompilationType::IDENTIFIER(), 'helloWorld');
     assertComplexCompiledData($compiledData, 3, CompilationType::SYMBOL(), '(');
-    assertComplexCompiledData($compiledData, 4, CompilationType::SYMBOL(), ')');
+    assertComplexCompiledData($compiledData, 4, CompilationType::EXPRESSION_LIST());
+    assertComplexCompiledData($compiledData, 5, CompilationType::SYMBOL(), ')');
 
-    $this->assertNull($compiledData->getDataFrom(5));
+    $this->assertNull($compiledData->getDataFrom(6));
+});
+
+it('compiles a subroutine call declaration with parameter list', function () {
+    $implementation = 'helloWorld(x, y, help)';
+    $tokenizedData = Tokenizer::create()->handleStringData($implementation);
+    $compiledData = SubroutineCallCompilation::create()->compile($tokenizedData);
+
+    $this->assertTrue(CompilationType::SUBROUTINE_CALL()->equals($compiledData->getType()));
+
+    assertComplexCompiledData($compiledData, 0, CompilationType::IDENTIFIER(), 'helloWorld');
+    assertComplexCompiledData($compiledData, 1, CompilationType::SYMBOL(), '(');
+    assertComplexCompiledData($compiledData, 2, CompilationType::EXPRESSION_LIST());
+    assertComplexCompiledData($compiledData, 3, CompilationType::SYMBOL(), ')');
 });
 
 it('throws a syntax error', function (string $implementation) {
