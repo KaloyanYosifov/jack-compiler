@@ -4,6 +4,7 @@ namespace Tests\Unit\CompileEngine\Compilations;
 
 use JackCompiler\Tokenizer\Tokenizer;
 use JackCompiler\CompileEngine\CompilationType;
+use JackCompiler\Exceptions\InvalidSyntaxError;
 use JackCompiler\CompileEngine\Compilations\TermCompilation;
 
 use function Tests\assertComplexCompiledData;
@@ -116,3 +117,12 @@ it('compiles an expression term', function () {
     assertComplexCompiledData($compiledData, 1, CompilationType::EXPRESSION());
     assertComplexCompiledData($compiledData, 2, CompilationType::SYMBOL(), ')');
 });
+
+it('throws a syntax error', function (string $implementation) {
+    $this->expectException(InvalidSyntaxError::class);
+    $tokenizedData = Tokenizer::create()->handleStringData($implementation);
+    TermCompilation::create()->compile($tokenizedData);
+})
+    ->with([
+        'test[24',
+    ]);
