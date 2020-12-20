@@ -22,7 +22,7 @@ class ExpressionCompilation extends AbstractCompilation
 
         if (
             $currentToken &&
-            !in_array($currentToken->getValue(), [']', ')']) &&
+            !in_array($currentToken->getValue(), [']', ')', ',']) &&
             $currentToken->getType()->equals(TokenType::SYMBOL())
         ) {
             $this->eat(CompilationType::SYMBOL(), TokenType::SYMBOL(), $this->operands);
