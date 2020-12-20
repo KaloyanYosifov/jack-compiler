@@ -8,6 +8,7 @@ use JackCompiler\CompileEngine\CompilationType;
 use JackCompiler\CompileEngine\ComplexCompiledData;
 use JackCompiler\CompileEngine\CompilationTokenExpector;
 use JackCompiler\CompileEngine\Compilations\AbstractCompilation;
+use JackCompiler\CompileEngine\Compilations\ExpressionCompilation;
 
 class LetStatementCompilation extends AbstractCompilation
 {
@@ -16,6 +17,9 @@ class LetStatementCompilation extends AbstractCompilation
         $this->init($tokenizedData, new ComplexCompiledData($this->getCompilationType()));
 
         $this->eat(CompilationType::KEYWORD(), TokenType::KEYWORD(), 'let');
+        $this->eat(CompilationType::IDENTIFIER(), TokenType::IDENTIFIER());
+        $this->eat(CompilationType::SYMBOL(), TokenType::SYMBOL(), '=');
+        $this->add(ExpressionCompilation::create()->compile($tokenizedData));
 
         return $this->getComplexCompiledData();
     }
