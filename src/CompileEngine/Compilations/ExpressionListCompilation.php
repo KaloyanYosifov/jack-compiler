@@ -5,6 +5,7 @@ namespace JackCompiler\CompileEngine\Compilations;
 use JackCompiler\Tokenizer\TokenType;
 use JackCompiler\Tokenizer\TokenizedData;
 use JackCompiler\CompileEngine\CompilationType;
+use JackCompiler\Exceptions\InvalidSyntaxError;
 use JackCompiler\CompileEngine\ComplexCompiledData;
 use JackCompiler\CompileEngine\CompilationTokenExpector;
 
@@ -24,6 +25,14 @@ class ExpressionListCompilation extends AbstractCompilation
 
         $this->add(ExpressionCompilation::create()->compile($tokenizedData));
         $this->addMoreExpressions($tokenizedData);
+
+        $currentToken = $this->getCurrentToken();
+
+        // if the next token is a closing bracket
+        // just do nothing
+        if ($currentToken && $currentToken->getValue() !== ')') {
+            throw new InvalidSyntaxError('When an expression list ends it must be closed with a closing ")" bracket!');
+        }
 
         return $this->getComplexCompiledData();
     }
