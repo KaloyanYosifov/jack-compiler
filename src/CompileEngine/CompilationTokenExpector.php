@@ -45,7 +45,18 @@ class CompilationTokenExpector
             // so we need to create an array to accept that
             $expectedValues = [$expectedValue];
             if (strlen($expectedValue) > 1 && (strpos($expectedValue, '|') !== false)) {
-                $expectedValues = explode('|', $expectedValue);
+                $expectedValues = array_map(
+                    function (string $value) {
+                        // if we have the \ then we are escaping the pipe |
+                        // so the user intends to use the pipe as an identifier
+                        if ($value === '\\') {
+                            return '|';
+                        }
+
+                        return $value;
+                    },
+                    array_filter(explode('|', $expectedValue))
+                );
             }
 
             if (!in_array($currentToken->getValue(), $expectedValues)) {
