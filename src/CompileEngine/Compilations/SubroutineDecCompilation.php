@@ -16,7 +16,7 @@ class SubroutineDecCompilation extends AbstractCompilation
         $this->init($tokenizedData, new ComplexCompiledData($this->getCompilationType()));
 
         $this->eat(CompilationType::KEYWORD(), TokenType::KEYWORD(), 'method|constructor|function');
-        $this->eat(CompilationType::KEYWORD(), TokenType::KEYWORD(), CompilationConstants::VAR_TYPES);
+        $this->eat(CompilationType::KEYWORD(), TokenType::KEYWORD(), CompilationConstants::VAR_TYPES . '|void');
         $this->eat(CompilationType::IDENTIFIER(), TokenType::IDENTIFIER());
         $this->eat(CompilationType::SYMBOL(), TokenType::SYMBOL(), '(');
 
