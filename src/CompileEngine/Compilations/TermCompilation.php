@@ -6,6 +6,7 @@ use JackCompiler\Tokenizer\Token;
 use JackCompiler\Tokenizer\TokenType;
 use JackCompiler\Tokenizer\TokenizedData;
 use JackCompiler\CompileEngine\CompilationType;
+use JackCompiler\Exceptions\InvalidSyntaxError;
 use JackCompiler\CompileEngine\ComplexCompiledData;
 use JackCompiler\CompileEngine\CompilationTokenExpector;
 
@@ -15,10 +16,13 @@ class TermCompilation extends AbstractCompilation
     {
         $this->init($tokenizedData, new ComplexCompiledData($this->getCompilationType()));
 
-        /**
-         * @var Token $currentToken
-         */
         $currentToken = $this->getCurrentToken();
+
+        if (!$currentToken) {
+            return $this->getComplexCompiledData();
+        }
+
+        $unaryOps = ['~', '-'];
 
         if ($currentToken->getType()->equals(TokenType::STRING())) {
             $this->eat(CompilationType::STRING_CONSTANT(), TokenType::STRING());
@@ -28,6 +32,15 @@ class TermCompilation extends AbstractCompilation
             $this->eat(CompilationType::KEYWORD(), TokenType::KEYWORD(), 'true|false|null|this');
         } elseif ($currentToken->getType()->equals(TokenType::IDENTIFIER())) {
             $this->compileIdentifierLogic($tokenizedData);
+        } elseif ($currentToken->getValue() === '(') {
+            $this->eat(CompilationType::SYMBOL(), TokenType::SYMBOL(), '(');
+            $this->add(ExpressionCompilation::create()->compile($tokenizedData));
+            $this->eat(CompilationType::SYMBOL(), TokenType::SYMBOL(), ')');
+        } elseif (in_array($currentToken->getValue(), $unaryOps)) {
+            $this->eat(CompilationType::SYMBOL(), TokenType::SYMBOL(), '~|-');
+            $this->add(static::create()->compile($tokenizedData));
+        } else {
+            throw new InvalidSyntaxError('The expression on the right of the let statement is invalid!');
         }
 
         return $this->getComplexCompiledData();
@@ -56,9 +69,6 @@ class TermCompilation extends AbstractCompilation
 
         $this->eat(CompilationType::IDENTIFIER(), TokenType::IDENTIFIER());
 
-        /**
-         * @var Token $currentToken
-         */
         $currentToken = $this->getCurrentToken();
 
         if ($currentToken && $currentToken->getValue() === '[') {

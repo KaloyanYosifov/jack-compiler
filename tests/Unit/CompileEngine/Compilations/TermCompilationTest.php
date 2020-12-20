@@ -78,3 +78,41 @@ it('compiles a subroutine call term', function () {
     assertComplexCompiledData($compiledData, 2, CompilationType::EXPRESSION_LIST());
     assertComplexCompiledData($compiledData, 3, CompilationType::SYMBOL(), ')');
 });
+
+it('compiles a class subroutine call term', function () {
+    $implementation = 'JackClass.test()';
+    $tokenizedData = Tokenizer::create()->handleStringData($implementation);
+    $compiledData = TermCompilation::create()->compile($tokenizedData);
+
+    $this->assertTrue(CompilationType::TERM()->equals($compiledData->getType()));
+
+    assertComplexCompiledData($compiledData, 0, CompilationType::IDENTIFIER(), 'JackClass');
+    assertComplexCompiledData($compiledData, 1, CompilationType::SYMBOL(), '.');
+    assertComplexCompiledData($compiledData, 2, CompilationType::IDENTIFIER());
+    assertComplexCompiledData($compiledData, 3, CompilationType::SYMBOL(), '(');
+    assertComplexCompiledData($compiledData, 4, CompilationType::EXPRESSION_LIST());
+    assertComplexCompiledData($compiledData, 5, CompilationType::SYMBOL(), ')');
+});
+
+it('compiles a unary op term', function () {
+    $implementation = '~test';
+    $tokenizedData = Tokenizer::create()->handleStringData($implementation);
+    $compiledData = TermCompilation::create()->compile($tokenizedData);
+
+    $this->assertTrue(CompilationType::TERM()->equals($compiledData->getType()));
+
+    assertComplexCompiledData($compiledData, 0, CompilationType::SYMBOL(), '~');
+    assertComplexCompiledData($compiledData, 1, CompilationType::TERM());
+});
+
+it('compiles an expression term', function () {
+    $implementation = '(test = hello)';
+    $tokenizedData = Tokenizer::create()->handleStringData($implementation);
+    $compiledData = TermCompilation::create()->compile($tokenizedData);
+
+    $this->assertTrue(CompilationType::TERM()->equals($compiledData->getType()));
+
+    assertComplexCompiledData($compiledData, 0, CompilationType::SYMBOL(), '(');
+    assertComplexCompiledData($compiledData, 1, CompilationType::EXPRESSION());
+    assertComplexCompiledData($compiledData, 2, CompilationType::SYMBOL(), ')');
+});
