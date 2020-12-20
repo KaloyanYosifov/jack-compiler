@@ -25,6 +25,7 @@ use MyCLabs\Enum\Enum;
  * @method static CompilationType EXPRESSION()
  * @method static CompilationType EXPRESSION_LIST()
  * @method static CompilationType SUBROUTINE_CALL()
+ * @method static CompilationType SUBROUTINE_BODY()
  * @method static CompilationType VARS()
  * @extends Enum<string>
  */
@@ -50,5 +51,6 @@ class CompilationType extends Enum
     private const EXPRESSION = 'expression';
     private const EXPRESSION_LIST = 'expressionList';
     private const SUBROUTINE_CALL = 'subroutineCall';
+    private const SUBROUTINE_BODY = 'subroutineBody';
     private const VARS = 'vars';
 }

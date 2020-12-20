@@ -4,7 +4,9 @@ namespace Tests\Unit\CompileEngine\Compilations;
 
 use JackCompiler\Tokenizer\Tokenizer;
 use JackCompiler\CompileEngine\CompilationType;
+use JackCompiler\Exceptions\InvalidSyntaxError;
 use JackCompiler\CompileEngine\Compilations\SubroutineDecCompilation;
+
 
 use function Tests\assertComplexCompiledData;
 
@@ -46,3 +48,14 @@ it('compiles a subroutine dec with parameter list', function () {
     assertComplexCompiledData($compiledData, 4, CompilationType::PARAMETER_LIST());
     assertComplexCompiledData($compiledData, 5, CompilationType::SYMBOL(), ')');
 });
+
+it('throws a syntax error', function (string $implementation) {
+    $this->expectException(InvalidSyntaxError::class);
+    $tokenizedData = Tokenizer::create()->handleStringData($implementation);
+    SubroutineDecCompilation::create()->compile($tokenizedData);
+})
+    ->with([
+        'method void testing {}',
+        'method tester () {}',
+        'testing int thetest () {}',
+    ]);

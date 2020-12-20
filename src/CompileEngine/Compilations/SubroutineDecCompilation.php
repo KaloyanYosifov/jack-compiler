@@ -28,8 +28,7 @@ class SubroutineDecCompilation extends AbstractCompilation
         }
 
         $this->eat(CompilationType::SYMBOL(), TokenType::SYMBOL(), ')');
-        $this->eat(CompilationType::SYMBOL(), TokenType::SYMBOL(), '{');
-        $this->eat(CompilationType::SYMBOL(), TokenType::SYMBOL(), '}');
+        $this->add(SubroutineBodyCompilation::create()->compile());
 
         return $this->getComplexCompiledData();
     }
