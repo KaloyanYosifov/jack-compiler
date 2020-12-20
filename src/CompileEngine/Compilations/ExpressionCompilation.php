@@ -14,28 +14,12 @@ class ExpressionCompilation extends AbstractCompilation
     {
         $this->init($tokenizedData, new ComplexCompiledData($this->getCompilationType()));
 
-        $this->eat(CompilationType::SYMBOL(), TokenType::SYMBOL(), '{');
-
-        // if the current token is not the ending curly bracket
-        // we start compiling other stuff
-        while ($currentToken = $this->getCurrentToken()) {
-            if ($currentToken->getValue() === 'var') {
-                $this->add(VarDecCompilation::create()->compile($tokenizedData));
-
-                continue;
-            }
-
-            break;
-        }
-
-        $this->eat(CompilationType::SYMBOL(), TokenType::SYMBOL(), '}');
-
         return $this->getComplexCompiledData();
     }
 
     public function getCompilationType(): CompilationType
     {
-        return CompilationType::SUBROUTINE_BODY();
+        return CompilationType::EXPRESSION();
     }
 
     public static function create(): self
