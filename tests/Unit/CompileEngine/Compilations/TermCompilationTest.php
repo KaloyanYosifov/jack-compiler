@@ -43,6 +43,29 @@ it('compiles a keyword term', function (string $keyword) {
         'this',
     ]);
 
+it('compiles a identifier term', function () {
+    $implementation = 'test';
+    $tokenizedData = Tokenizer::create()->handleStringData($implementation);
+    $compiledData = TermCompilation::create()->compile($tokenizedData);
+
+    $this->assertTrue(CompilationType::TERM()->equals($compiledData->getType()));
+
+    assertComplexCompiledData($compiledData, 0, CompilationType::IDENTIFIER(), 'test');
+});
+
+it('compiles an array term', function () {
+    $implementation = 'test[32]';
+    $tokenizedData = Tokenizer::create()->handleStringData($implementation);
+    $compiledData = TermCompilation::create()->compile($tokenizedData);
+
+    $this->assertTrue(CompilationType::TERM()->equals($compiledData->getType()));
+
+    assertComplexCompiledData($compiledData, 0, CompilationType::IDENTIFIER(), 'test');
+    assertComplexCompiledData($compiledData, 1, CompilationType::SYMBOL(), '[');
+    assertComplexCompiledData($compiledData, 2, CompilationType::EXPRESSION());
+    assertComplexCompiledData($compiledData, 3, CompilationType::SYMBOL(), ']');
+});
+
 it('compiles a subroutine call term', function () {
     $implementation = 'test()';
     $tokenizedData = Tokenizer::create()->handleStringData($implementation);

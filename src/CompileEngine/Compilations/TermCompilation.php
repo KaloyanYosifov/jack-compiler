@@ -41,8 +41,10 @@ class TermCompilation extends AbstractCompilation
     private function compileIdentifierLogic(TokenizedData $tokenizedData): void
     {
         // if the next token is either a dot or a parentheses
+        $nextToken = $this->peekNextToken();
+
         /** @phpstan-ignore-next-line */
-        if (in_array($this->peekNextToken()->getValue(), ['.', '('])) {
+        if ($nextToken && in_array($nextToken->getValue(), ['.', '('])) {
             $subroutineCallCompilation = SubroutineCallCompilation::create()->compile($tokenizedData);
 
             foreach ($subroutineCallCompilation as $compiledData) {
@@ -59,7 +61,7 @@ class TermCompilation extends AbstractCompilation
          */
         $currentToken = $this->getCurrentToken();
 
-        if ($currentToken->getValue() === '[') {
+        if ($currentToken && $currentToken->getValue() === '[') {
             $this->eat(CompilationType::SYMBOL(), TokenType::SYMBOL(), '[');
             $this->add(ExpressionCompilation::create()->compile($tokenizedData));
             $this->eat(CompilationType::SYMBOL(), TokenType::SYMBOL(), ']');
