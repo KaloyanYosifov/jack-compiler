@@ -24,6 +24,22 @@ it('compiles a subroutine call declaration', function () {
     $this->assertNull($compiledData->getDataFrom(3));
 });
 
+it('compiles a subroutine class call decleration', function () {
+    $classImplementation = 'JackClass.helloWorld()';
+    $tokenizedData = Tokenizer::create()->handleStringData($classImplementation);
+    $compiledData = SubroutineCallCompilation::create()->compile($tokenizedData);
+
+    $this->assertTrue(CompilationType::SUBROUTINE_CALL()->equals($compiledData->getType()));
+
+    assertComplexCompiledData($compiledData, 0, CompilationType::IDENTIFIER(), 'JackClass');
+    assertComplexCompiledData($compiledData, 1, CompilationType::SYMBOL(), '.');
+    assertComplexCompiledData($compiledData, 2, CompilationType::IDENTIFIER(), 'helloWorld');
+    assertComplexCompiledData($compiledData, 3, CompilationType::SYMBOL(), '(');
+    assertComplexCompiledData($compiledData, 4, CompilationType::SYMBOL(), ')');
+
+    $this->assertNull($compiledData->getDataFrom(5));
+});
+
 it('throws a syntax error', function (string $implementation) {
     $this->expectException(InvalidSyntaxError::class);
     $tokenizedData = Tokenizer::create()->handleStringData($implementation);
