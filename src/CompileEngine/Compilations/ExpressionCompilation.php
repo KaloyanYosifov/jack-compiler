@@ -2,7 +2,6 @@
 
 namespace JackCompiler\CompileEngine\Compilations;
 
-use JackCompiler\Tokenizer\TokenType;
 use JackCompiler\Tokenizer\TokenizedData;
 use JackCompiler\CompileEngine\CompilationType;
 use JackCompiler\CompileEngine\ComplexCompiledData;

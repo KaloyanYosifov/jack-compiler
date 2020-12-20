@@ -60,5 +60,4 @@ class TermCompilation extends AbstractCompilation
     {
         return new self(new CompilationTokenExpector());
     }
-
 }
