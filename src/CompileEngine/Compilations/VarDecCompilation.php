@@ -8,34 +8,29 @@ use JackCompiler\CompileEngine\CompilationType;
 use JackCompiler\CompileEngine\ComplexCompiledData;
 use JackCompiler\CompileEngine\CompilationTokenExpector;
 
-class SubroutineBodyCompilation extends AbstractCompilation
+class VarDecCompilation extends AbstractCompilation
 {
     public function compile(TokenizedData $tokenizedData): ComplexCompiledData
     {
         $this->init($tokenizedData, new ComplexCompiledData($this->getCompilationType()));
 
-        $this->eat(CompilationType::SYMBOL(), TokenType::SYMBOL(), '{');
+        $this->eat(CompilationType::KEYWORD(), TokenType::KEYWORD(), 'var');
 
-        // if the current token is not the ending curly bracket
-        // we start compiling other stuff
-        while ($currentToken = $this->getCurrentToken()) {
-            if ($currentToken->getValue() === 'var') {
-                $this->add(VarDecCompilation::create()->compile($tokenizedData));
+        // since variables compilation cannot work alone we add their compiled data to this one
+        $complexCompiledData = VariablesCompilation::create()->compile($tokenizedData);
 
-                continue;
-            }
-
-            break;
+        foreach ($complexCompiledData as $compiledData) {
+            $this->add($compiledData);
         }
 
-        $this->eat(CompilationType::SYMBOL(), TokenType::SYMBOL(), '}');
+        $this->eat(CompilationType::SYMBOL(), TokenType::SYMBOL(), ';');
 
         return $this->getComplexCompiledData();
     }
 
     public function getCompilationType(): CompilationType
     {
-        return CompilationType::SUBROUTINE_BODY();
+        return CompilationType::VAR_DEC();
     }
 
     public static function create(): self
