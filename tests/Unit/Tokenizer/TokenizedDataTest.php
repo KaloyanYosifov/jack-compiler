@@ -7,7 +7,7 @@ use JackCompiler\Tokenizer\TokenType;
 use JackCompiler\Tokenizer\TokenizedData;
 
 it('shows if it has more tokens', function () {
-    $token = new Token(TokenType::KEYWORD(), 'value');
+    $token = new Token(TokenType::KEYWORD(), 'value', 0, 'test');
     $tokenizedData = new TokenizedData([$token]);
 
     expect($tokenizedData->hasMoreTokens())->toBeTrue();
@@ -17,8 +17,8 @@ it('shows if it has more tokens', function () {
 
 it('resets to first token', function () {
     $tokens = [
-        new Token(TokenType::KEYWORD(), 'value'),
-        new Token(TokenType::IDENTIFIER(), 'something'),
+        new Token(TokenType::KEYWORD(), 'value', 0, 'test'),
+        new Token(TokenType::IDENTIFIER(), 'something', 0, 'test'),
     ];
     $tokenizedData = new TokenizedData($tokens);
 
@@ -38,8 +38,8 @@ it('resets to first token', function () {
 
 it('advances to next token', function () {
     $tokens = [
-        new Token(TokenType::KEYWORD(), 'value'),
-        new Token(TokenType::IDENTIFIER(), 'something'),
+        new Token(TokenType::KEYWORD(), 'value', 0, 'test'),
+        new Token(TokenType::IDENTIFIER(), 'something', 0, 'test'),
     ];
     $tokenizedData = new TokenizedData($tokens);
 
@@ -59,8 +59,8 @@ it('advances to next token', function () {
 
 it('can peek next token', function () {
     $tokens = [
-        new Token(TokenType::KEYWORD(), 'value'),
-        new Token(TokenType::IDENTIFIER(), 'something'),
+        new Token(TokenType::KEYWORD(), 'value', 0, 'test'),
+        new Token(TokenType::IDENTIFIER(), 'something', 0, 'test'),
     ];
     $tokenizedData = new TokenizedData($tokens);
 
@@ -76,7 +76,7 @@ it('can peek next token', function () {
 
 it('returns null if there is no token left to peek', function () {
     $tokens = [
-        new Token(TokenType::KEYWORD(), 'value'),
+        new Token(TokenType::KEYWORD(), 'value', 0, 'test'),
     ];
     $tokenizedData = new TokenizedData($tokens);
 

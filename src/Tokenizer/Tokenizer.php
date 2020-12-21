@@ -25,18 +25,7 @@ class Tokenizer
 
     public function handle(string $filename): TokenizedData
     {
-        $tokens = [];
-        foreach ($this->fileReader->readFile($filename) as $line) {
-            if (!$tokensFound = $this->parseLineForTokens($line)) {
-                continue;
-            }
-
-            foreach ($tokensFound as $tokenFound) {
-                $tokens[] = new Token($this->tokensMap->getTokenType($tokenFound), $tokenFound);
-            }
-        }
-
-        return new TokenizedData($tokens);
+        return $this->searchForTokens($this->fileReader->readFile($filename), $filename);
     }
 
     public function handleStringData(string $data): TokenizedData
@@ -45,25 +34,36 @@ class Tokenizer
             return new TokenizedData([]);
         }
 
-        $tokens = [];
-        $lines = explode(PHP_EOL, $data);
-
-        foreach ($lines as $line) {
-            if (!$tokensFound = $this->parseLineForTokens($line)) {
-                continue;
-            }
-
-            foreach ($tokensFound as $tokenFound) {
-                $tokens[] = new Token($this->tokensMap->getTokenType($tokenFound), $tokenFound);
-            }
-        }
-
-        return new TokenizedData($tokens);
+        return $this->searchForTokens(explode(PHP_EOL, $data));
     }
 
     public static function create(): self
     {
         return new self(new FileReader(new LineParser()), new TokensMap(), new LineParser());
+    }
+
+    protected function searchForTokens($lines, string $fileParsing = 'unknown'): TokenizedData
+    {
+        $tokens = [];
+        $lineNumber = 0;
+        foreach ($lines as $line) {
+            $lineNumber++;
+
+            if (!$tokensFound = $this->parseLineForTokens($line)) {
+                continue;
+            }
+
+            foreach ($tokensFound as $tokenFound) {
+                $tokens[] = new Token(
+                    $this->tokensMap->getTokenType($tokenFound),
+                    $tokenFound,
+                    $lineNumber,
+                    $fileParsing
+                );
+            }
+        }
+
+        return new TokenizedData($tokens);
     }
 
     /**
