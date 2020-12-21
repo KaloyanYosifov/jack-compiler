@@ -26,14 +26,8 @@ class CompilationTokenExpector
          * @var Token $currentToken
          */
         $currentToken = $tokenizedData->currentToken();
-        //we skip the token and value checks
-        // if we have "className" in the expected value
-        // and if we use a keyword
-        // since the className is a special token that can be anything we do not check for types or values
-        // the checks if we do have the class is going to happen at runtime
-        $skipTokenAndValueChecks = str_contains($expectedValue, 'className') && $tokenType->equals(TokenType::KEYWORD());
 
-        if (!$skipTokenAndValueChecks && !$currentToken->getType()->equals($tokenType)) {
+        if (!$currentToken->getType()->equals($tokenType)) {
             throw new InvalidSyntaxError(
                 sprintf(
                     'Expected "%s" got "%s" on line "%d" file "%s"',
@@ -48,7 +42,7 @@ class CompilationTokenExpector
         // we check if we have an expected value and
         // we also check if we are using a keyword and the expect value contains className
         // if that is the case we skip the if condition as className can be any type
-        if ($expectedValue && !$skipTokenAndValueChecks) {
+        if ($expectedValue) {
             // we can check multiple values like "field|static"
             // so we need to create an array to accept that
             $expectedValues = [$expectedValue];

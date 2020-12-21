@@ -30,7 +30,14 @@ class VariablesCompilation extends AbstractCompilation
     {
         $this->init($tokenizedData, new ComplexCompiledData($this->getCompilationType()));
 
-        $this->eat(CompilationType::KEYWORD(), TokenType::KEYWORD(), CompilationConstants::VAR_TYPES);
+        try {
+            // if we do not find a keyword
+            $this->eat(CompilationType::KEYWORD(), TokenType::KEYWORD(), CompilationConstants::VAR_TYPES . '|void');
+        } catch (InvalidSyntaxError $exception) {
+            // then we search for an identifier as the type
+            $this->eat(CompilationType::IDENTIFIER(), TokenType::IDENTIFIER());
+        }
+
         $this->eat(CompilationType::IDENTIFIER(), TokenType::IDENTIFIER());
 
         $this->initMoreFields();
@@ -58,7 +65,13 @@ class VariablesCompilation extends AbstractCompilation
         }
 
         if ($this->typeForEveryNewVariable) {
-            $this->eat(CompilationType::KEYWORD(), TokenType::KEYWORD(), CompilationConstants::VAR_TYPES);
+            try {
+                // if we do not find a keyword
+                $this->eat(CompilationType::KEYWORD(), TokenType::KEYWORD(), CompilationConstants::VAR_TYPES . '|void');
+            } catch (InvalidSyntaxError $exception) {
+                // then we search for an identifier as the type
+                $this->eat(CompilationType::IDENTIFIER(), TokenType::IDENTIFIER());
+            }
         }
 
         $this->eat(CompilationType::IDENTIFIER(), TokenType::IDENTIFIER());

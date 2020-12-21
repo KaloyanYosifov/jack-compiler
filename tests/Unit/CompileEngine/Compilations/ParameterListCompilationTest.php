@@ -28,7 +28,7 @@ it('compiles parameter list declaration', function () {
     assertComplexCompiledData($compiledData, 7, CompilationType::IDENTIFIER(), 'toast');
 
     assertComplexCompiledData($compiledData, 8, CompilationType::SYMBOL(), ',');
-    assertComplexCompiledData($compiledData, 9, CompilationType::KEYWORD(), 'JackClass');
+    assertComplexCompiledData($compiledData, 9, CompilationType::IDENTIFIER(), 'JackClass');
     assertComplexCompiledData($compiledData, 10, CompilationType::IDENTIFIER(), 'jack');
 });
 
