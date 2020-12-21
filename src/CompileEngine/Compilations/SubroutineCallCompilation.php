@@ -2,7 +2,6 @@
 
 namespace JackCompiler\CompileEngine\Compilations;
 
-use JackCompiler\Tokenizer\Token;
 use JackCompiler\Tokenizer\TokenType;
 use JackCompiler\Tokenizer\TokenizedData;
 use JackCompiler\CompileEngine\CompilationType;
@@ -17,9 +16,6 @@ class SubroutineCallCompilation extends AbstractCompilation
 
         $this->eat(CompilationType::IDENTIFIER(), TokenType::IDENTIFIER());
 
-        /**
-         * @var Token $currentToken
-         */
         $currentToken = $this->getCurrentToken();
 
         // we are compiling a class subroutine call
