@@ -47,7 +47,7 @@ class CompilationXMLExporter
          */
         foreach ($complexData as $data) {
             if ($data instanceof CompiledData) {
-                $xml->addChild($data->getType()->getValue(), $data->getValue());
+                $xml->addChild($data->getType()->getValue(), ' ' . $data->getValue() . ' ');
                 continue;
             }
 

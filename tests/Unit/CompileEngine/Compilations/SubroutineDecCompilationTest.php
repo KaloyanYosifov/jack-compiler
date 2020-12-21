@@ -24,9 +24,10 @@ it('compiles a subroutine dec', function () {
     assertComplexCompiledData($compiledData, 1, CompilationType::KEYWORD(), 'void');
     assertComplexCompiledData($compiledData, 2, CompilationType::IDENTIFIER(), 'testing');
     assertComplexCompiledData($compiledData, 3, CompilationType::SYMBOL(), '(');
-    assertComplexCompiledData($compiledData, 4, CompilationType::SYMBOL(), ')');
-    assertComplexCompiledData($compiledData, 5, CompilationType::SUBROUTINE_BODY());
-    $this->assertNull($compiledData->getDataFrom(6));
+    assertComplexCompiledData($compiledData, 4, CompilationType::PARAMETER_LIST());
+    assertComplexCompiledData($compiledData, 5, CompilationType::SYMBOL(), ')');
+    assertComplexCompiledData($compiledData, 6, CompilationType::SUBROUTINE_BODY());
+    $this->assertNull($compiledData->getDataFrom(7));
 });
 
 it('compiles a subroutine dec with parameter list', function () {

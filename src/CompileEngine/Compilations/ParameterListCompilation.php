@@ -13,10 +13,19 @@ class ParameterListCompilation extends AbstractCompilation
     {
         $this->init($tokenizedData, new ComplexCompiledData($this->getCompilationType()));
 
-        $parametersCompilation = VariablesCompilation::create(true)->compile($tokenizedData);
+        $currentToken = $this->getCurrentToken();
 
-        foreach ($parametersCompilation as $parameterData) {
-            $this->add($parameterData);
+        if ($currentToken) {
+            // we do not have any parameters
+            if ($currentToken->getValue() === ')') {
+                return $this->getComplexCompiledData();
+            }
+
+            $parametersCompilation = VariablesCompilation::create(true)->compile($tokenizedData);
+
+            foreach ($parametersCompilation as $parameterData) {
+                $this->add($parameterData);
+            }
         }
 
         return $this->getComplexCompiledData();

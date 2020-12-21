@@ -19,14 +19,7 @@ class SubroutineDecCompilation extends AbstractCompilation
         $this->eat(CompilationType::KEYWORD(), TokenType::KEYWORD(), CompilationConstants::VAR_TYPES . '|void');
         $this->eat(CompilationType::IDENTIFIER(), TokenType::IDENTIFIER());
         $this->eat(CompilationType::SYMBOL(), TokenType::SYMBOL(), '(');
-
-        // if the current token we are getting is not a closing bracket
-        // initiate parameter list compilation
-        /** @phpstan-ignore-next-line */
-        if ($this->getCurrentToken()->getValue() !== ')') {
-            $this->add(ParameterListCompilation::create()->compile($tokenizedData));
-        }
-
+        $this->add(ParameterListCompilation::create()->compile($tokenizedData));
         $this->eat(CompilationType::SYMBOL(), TokenType::SYMBOL(), ')');
         $this->add(SubroutineBodyCompilation::create()->compile($tokenizedData));
 
