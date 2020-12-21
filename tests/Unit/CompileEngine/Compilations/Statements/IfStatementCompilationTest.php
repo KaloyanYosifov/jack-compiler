@@ -78,6 +78,33 @@ it('compiles an if statement with nested statements', function () {
     $this->assertNull($compiledData->getDataFrom(7));
 });
 
+it('compiles an if statement with an else and nested statements', function () {
+    $implementation = <<<EOF
+        if (test) {
+        } else {
+            let testingThis = "hacker"; 
+        }
+    EOF;
+
+    $tokenizedData = Tokenizer::create()->handleStringData($implementation);
+    $compiledData = IfStatementCompilation::create()->compile($tokenizedData);
+
+    $this->assertTrue(CompilationType::IF_STATEMENT()->equals($compiledData->getType()));
+
+    assertComplexCompiledData($compiledData, 0, CompilationType::KEYWORD(), 'if');
+    assertComplexCompiledData($compiledData, 1, CompilationType::SYMBOL(), '(');
+    assertComplexCompiledData($compiledData, 2, CompilationType::EXPRESSION());
+    assertComplexCompiledData($compiledData, 3, CompilationType::SYMBOL(), ')');
+    assertComplexCompiledData($compiledData, 4, CompilationType::SYMBOL(), '{');
+    assertComplexCompiledData($compiledData, 5, CompilationType::SYMBOL(), '}');
+    assertComplexCompiledData($compiledData, 6, CompilationType::KEYWORD(), 'else');
+    assertComplexCompiledData($compiledData, 7, CompilationType::SYMBOL(), '{');
+    assertComplexCompiledData($compiledData, 8, CompilationType::STATEMENTS());
+    assertComplexCompiledData($compiledData, 9, CompilationType::SYMBOL(), '}');
+
+    $this->assertNull($compiledData->getDataFrom(10));
+});
+
 it('throws a syntax error', function (string $implementation) {
     $this->expectException(InvalidSyntaxError::class);
     $tokenizedData = Tokenizer::create()->handleStringData($implementation);
