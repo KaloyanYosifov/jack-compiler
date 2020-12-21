@@ -35,6 +35,18 @@ it('compiles the classVarDec', function () {
     $this->assertTrue(CompilationType::CLASS_VAR_DEC()->equals($classVarDecCompiledData2->getType()));
 });
 
+it('compiles the subroutineDec', function () {
+    $classImplementation = 'class JackClass { constructor void JackClass() {} }';
+    $tokenizedData = Tokenizer::create()->handleStringData($classImplementation);
+    $compiledData = ClassCompilation::create()->compile($tokenizedData);
+
+    assertComplexCompiledData($compiledData, 0, CompilationType::KEYWORD(), 'class');
+    assertComplexCompiledData($compiledData, 1, CompilationType::IDENTIFIER(), 'JackClass');
+    assertComplexCompiledData($compiledData, 2, CompilationType::SYMBOL(), '{');
+    assertComplexCompiledData($compiledData, 3, CompilationType::SUBROUTINE_DEC());
+    assertComplexCompiledData($compiledData, 4, CompilationType::SYMBOL(), '}');
+});
+
 it('throws a syntax error', function (string $implementation) {
     $this->expectException(InvalidSyntaxError::class);
     $tokenizedData = Tokenizer::create()->handleStringData($implementation);
