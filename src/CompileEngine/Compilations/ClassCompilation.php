@@ -27,6 +27,14 @@ class ClassCompilation extends AbstractCompilation
                 continue;
             }
 
+            // while we have a token
+            // check if we have some of the subroutine decs
+            if (in_array($currentToken->getValue(), ['method', 'constructor', 'function'])) {
+                $this->add(SubroutineDecCompilation::create()->compile($tokenizedData));
+
+                continue;
+            }
+
             break;
         }
 
