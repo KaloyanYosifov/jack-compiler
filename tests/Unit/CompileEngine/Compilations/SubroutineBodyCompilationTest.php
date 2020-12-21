@@ -19,7 +19,8 @@ it('compiles a subroutine dec', function () {
     $this->assertTrue(CompilationType::SUBROUTINE_BODY()->equals($compiledData->getType()));
 
     assertComplexCompiledData($compiledData, 0, CompilationType::SYMBOL(), '{');
-    assertComplexCompiledData($compiledData, 1, CompilationType::SYMBOL(), '}');
+    assertComplexCompiledData($compiledData, 1, CompilationType::STATEMENTS());
+    assertComplexCompiledData($compiledData, 2, CompilationType::SYMBOL(), '}');
 });
 
 it('compiles a subroutine dec with var dec', function () {
@@ -37,7 +38,24 @@ it('compiles a subroutine dec with var dec', function () {
     assertComplexCompiledData($compiledData, 0, CompilationType::SYMBOL(), '{');
     assertComplexCompiledData($compiledData, 1, CompilationType::VAR_DEC());
     assertComplexCompiledData($compiledData, 2, CompilationType::VAR_DEC());
-    assertComplexCompiledData($compiledData, 3, CompilationType::SYMBOL(), '}');
+    assertComplexCompiledData($compiledData, 3, CompilationType::STATEMENTS());
+    assertComplexCompiledData($compiledData, 4, CompilationType::SYMBOL(), '}');
+});
+
+it('compiles a subroutine dec with statements', function () {
+    $subroutineImplementation = <<<EOD
+        {
+            let helloWorld = "hello";
+        }
+    EOD;
+    $tokenizedData = Tokenizer::create()->handleStringData($subroutineImplementation);
+    $compiledData = SubroutineBodyCompilation::create()->compile($tokenizedData);
+
+    $this->assertTrue(CompilationType::SUBROUTINE_BODY()->equals($compiledData->getType()));
+
+    assertComplexCompiledData($compiledData, 0, CompilationType::SYMBOL(), '{');
+    assertComplexCompiledData($compiledData, 1, CompilationType::STATEMENTS());
+    assertComplexCompiledData($compiledData, 2, CompilationType::SYMBOL(), '}');
 });
 
 it('throws a syntax error', function (string $implementation) {
