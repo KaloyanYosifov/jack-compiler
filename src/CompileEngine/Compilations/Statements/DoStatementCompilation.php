@@ -18,6 +18,7 @@ class DoStatementCompilation extends AbstractCompilation
 
         $this->eat(CompilationType::KEYWORD(), TokenType::KEYWORD(), 'do');
         $this->add(SubroutineCallCompilation::create()->compile($tokenizedData));
+        $this->eat(CompilationType::SYMBOL(), TokenType::SYMBOL(), ';');
 
         return $this->getComplexCompiledData();
     }
@@ -30,15 +31,5 @@ class DoStatementCompilation extends AbstractCompilation
     public static function create(): self
     {
         return new self(new CompilationTokenExpector());
-    }
-
-    private function compileStatements(TokenizedData $tokenizedData): void
-    {
-        $currentToken = $this->getCurrentToken();
-
-        // add statements compilation only if the current token is not the closing bracket for the if
-        if ($currentToken && $currentToken->getValue() !== '}') {
-            $this->add(StatementsCompilation::create()->compile($tokenizedData));
-        }
     }
 }

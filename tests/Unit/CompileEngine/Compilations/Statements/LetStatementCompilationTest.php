@@ -10,7 +10,7 @@ use JackCompiler\CompileEngine\Compilations\Statements\LetStatementCompilation;
 use function Tests\assertComplexCompiledData;
 
 it('compiles a let statement declaration', function () {
-    $implementation = 'let testing = 35';
+    $implementation = 'let testing = 35;';
     $tokenizedData = Tokenizer::create()->handleStringData($implementation);
     $compiledData = LetStatementCompilation::create()->compile($tokenizedData);
 
@@ -25,7 +25,7 @@ it('compiles a let statement declaration', function () {
 });
 
 it('compiles an array let statement declaration', function () {
-    $implementation = 'let testing[23] = 35';
+    $implementation = 'let testing[23] = 35;';
     $tokenizedData = Tokenizer::create()->handleStringData($implementation);
     $compiledData = LetStatementCompilation::create()->compile($tokenizedData);
 
@@ -50,4 +50,5 @@ it('throws a syntax error', function (string $implementation) {
     ->with([
         'let testing[233 = "hehe"',
         'let testing 3213',
+        'let test = "testing"',
     ]);

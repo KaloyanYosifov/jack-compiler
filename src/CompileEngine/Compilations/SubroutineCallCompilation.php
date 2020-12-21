@@ -23,7 +23,7 @@ class SubroutineCallCompilation extends AbstractCompilation
         $currentToken = $this->getCurrentToken();
 
         // we are compiling a class subroutine call
-        if ($currentToken->getValue() === '.') {
+        if ($currentToken && $currentToken->getValue() === '.') {
             $this->eat(CompilationType::SYMBOL(), TokenType::SYMBOL(), '.');
             $this->eat(CompilationType::IDENTIFIER(), TokenType::IDENTIFIER());
         }

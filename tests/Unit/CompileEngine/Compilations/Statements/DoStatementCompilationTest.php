@@ -16,14 +16,15 @@ it('compiles a do statement', function (string $implementation) {
     $this->assertTrue(CompilationType::DO_STATEMENT()->equals($compiledData->getType()));
     assertComplexCompiledData($compiledData, 0, CompilationType::KEYWORD(), 'do');
     assertComplexCompiledData($compiledData, 1, CompilationType::SUBROUTINE_CALL());
+    assertComplexCompiledData($compiledData, 2, CompilationType::SYMBOL(), ';');
 
-    $this->assertNull($compiledData->getDataFrom(2));
+    $this->assertNull($compiledData->getDataFrom(3));
 })
     ->with([
-        'do test()',
-        'do test(y, x)',
-        'do JackClass.test()',
-        'do JackClass.test(x, y)',
+        'do test();',
+        'do test(y, x);',
+        'do JackClass.test();',
+        'do JackClass.test(x, y);',
     ]);
 
 it('throws a syntax error', function (string $implementation) {
@@ -36,4 +37,5 @@ it('throws a syntax error', function (string $implementation) {
         'do rest',
         'do test(',
         'do JackClass.',
+        'do JackClass.test()',
     ]);
