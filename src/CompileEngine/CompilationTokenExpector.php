@@ -34,7 +34,15 @@ class CompilationTokenExpector
         $skipTokenAndValueChecks = str_contains($expectedValue, 'className') && $tokenType->equals(TokenType::KEYWORD());
 
         if (!$skipTokenAndValueChecks && !$currentToken->getType()->equals($tokenType)) {
-            throw new InvalidSyntaxError('Expected: ' . $tokenType->getValue() . ' got :' . $currentToken->getType()->getValue());
+            throw new InvalidSyntaxError(
+                sprintf(
+                    'Expected "%s" got "%s" on line "%d" file "%s"',
+                    $tokenType->getValue(),
+                    $currentToken->getType()->getValue(),
+                    $currentToken->getLine(),
+                    $currentToken->getFilename()
+                )
+            );
         }
 
         // we check if we have an expected value and
@@ -60,7 +68,15 @@ class CompilationTokenExpector
             }
 
             if (!in_array($currentToken->getValue(), $expectedValues)) {
-                throw new InvalidSyntaxError('Expected "' . $expectedValue . '" got "' . $currentToken->getValue() . '"');
+                throw new InvalidSyntaxError(
+                    sprintf(
+                        'Expected "%s" got "%s" on line "%d" file "%s"',
+                        $expectedValue,
+                        $currentToken->getValue(),
+                        $currentToken->getLine(),
+                        $currentToken->getFilename()
+                    )
+                );
             }
         }
 
