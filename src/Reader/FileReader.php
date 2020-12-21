@@ -26,13 +26,7 @@ class FileReader
         $file = fopen($filename, 'rb');
 
         while ($line = fgets($file, 4096)) {
-            $line = $this->lineParser->handle($line);
-
-            if (!$line) {
-                continue;
-            }
-
-            yield $line;
+            yield $this->lineParser->handle($line);
         }
 
         fclose($file);

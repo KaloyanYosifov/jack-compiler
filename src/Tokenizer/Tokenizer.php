@@ -55,7 +55,7 @@ class Tokenizer
         foreach ($lines as $line) {
             $lineNumber++;
 
-            if (!$tokensFound = $this->parseLineForTokens($line)) {
+            if (!$line || !$tokensFound = $this->parseLineForTokens($line)) {
                 continue;
             }
 
