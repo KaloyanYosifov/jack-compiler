@@ -11,16 +11,27 @@ use JackCompiler\CompileEngine\Compilations\AbstractCompilation;
 class StatementsCompilation extends AbstractCompilation
 {
     protected array $statementTypes = [
-        'let' => 'letStatement',
-        'if' => 'ifStatement',
-        'while' => 'whileStatement',
-        'do' => 'doStatement',
-        'return' => 'returnStatement',
+        'let' => LetStatementCompilation::class,
+        'if' => IfStatementCompilation::class,
+        'while' => WhileStatementCompilation::class,
+        'do' => DoStatementCompilation::class,
+        'return' => ReturnStatementCompilation::class,
     ];
 
     public function compile(TokenizedData $tokenizedData): ComplexCompiledData
     {
         $this->init($tokenizedData, new ComplexCompiledData($this->getCompilationType()));
+
+        while ($currentToken = $this->getCurrentToken()) {
+            if (array_key_exists($currentToken->getValue(), $this->statementTypes)) {
+                $statementClassToCompile = $this->statementTypes[$currentToken->getValue()]::create();
+
+                $this->add($statementClassToCompile->compile($tokenizedData));
+                continue;
+            }
+
+            break;
+        }
 
         return $this->getComplexCompiledData();
     }

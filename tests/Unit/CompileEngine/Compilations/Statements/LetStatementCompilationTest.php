@@ -20,8 +20,9 @@ it('compiles a let statement declaration', function () {
     assertComplexCompiledData($compiledData, 1, CompilationType::IDENTIFIER(), 'testing');
     assertComplexCompiledData($compiledData, 2, CompilationType::SYMBOL(), '=');
     assertComplexCompiledData($compiledData, 3, CompilationType::EXPRESSION());
+    assertComplexCompiledData($compiledData, 4, CompilationType::SYMBOL(), ';');
 
-    $this->assertNull($compiledData->getDataFrom(4));
+    $this->assertNull($compiledData->getDataFrom(5));
 });
 
 it('compiles an array let statement declaration', function () {
@@ -38,8 +39,9 @@ it('compiles an array let statement declaration', function () {
     assertComplexCompiledData($compiledData, 4, CompilationType::SYMBOL(), ']');
     assertComplexCompiledData($compiledData, 5, CompilationType::SYMBOL(), '=');
     assertComplexCompiledData($compiledData, 6, CompilationType::EXPRESSION());
+    assertComplexCompiledData($compiledData, 7, CompilationType::SYMBOL(), ';');
 
-    $this->assertNull($compiledData->getDataFrom(7));
+    $this->assertNull($compiledData->getDataFrom(8));
 });
 
 it('throws a syntax error', function (string $implementation) {
