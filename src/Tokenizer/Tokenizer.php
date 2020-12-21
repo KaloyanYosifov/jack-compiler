@@ -42,6 +42,12 @@ class Tokenizer
         return new self(new FileReader(new LineParser()), new TokensMap(), new LineParser());
     }
 
+    /**
+     * @param array|\Generator $lines
+     * @param string $fileParsing
+     * @return TokenizedData
+     * @throws \JackCompiler\Exceptions\InvalidIdentifierName
+     */
     protected function searchForTokens($lines, string $fileParsing = 'unknown'): TokenizedData
     {
         $tokens = [];
