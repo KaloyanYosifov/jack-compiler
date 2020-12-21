@@ -4,6 +4,7 @@ namespace Tests\Unit\CompileEngine\Compilations;
 
 use JackCompiler\Tokenizer\Tokenizer;
 use JackCompiler\CompileEngine\CompilationType;
+use JackCompiler\Exceptions\InvalidSyntaxError;
 use JackCompiler\CompileEngine\Compilations\Statements\LetStatementCompilation;
 
 use function Tests\assertComplexCompiledData;
@@ -40,3 +41,13 @@ it('compiles an array let statement declaration', function () {
 
     $this->assertNull($compiledData->getDataFrom(7));
 });
+
+it('throws a syntax error', function (string $implementation) {
+    $this->expectException(InvalidSyntaxError::class);
+    $tokenizedData = Tokenizer::create()->handleStringData($implementation);
+    LetStatementCompilation::create()->compile($tokenizedData);
+})
+    ->with([
+        'let testing[233 = "hehe"',
+        'let testing 3213',
+    ]);
