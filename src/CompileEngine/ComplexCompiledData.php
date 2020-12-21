@@ -51,6 +51,11 @@ class ComplexCompiledData implements \IteratorAggregate
         return $this->data[$index];
     }
 
+    public function isEmpty(): bool
+    {
+        return count($this->data) <= 0;
+    }
+
     public function getIterator()
     {
         return new \ArrayIterator($this->data);

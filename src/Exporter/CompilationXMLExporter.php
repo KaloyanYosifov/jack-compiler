@@ -24,7 +24,7 @@ class CompilationXMLExporter
         $dom = new \DOMDocument('1.0');
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = true;
-        $dom->loadXML((string) $xml->asXML());
+        $dom->loadXML((string) $xml->asXML(), LIBXML_NOEMPTYTAG);
 
         $xml = '';
 
@@ -47,11 +47,16 @@ class CompilationXMLExporter
          */
         foreach ($complexData as $data) {
             if ($data instanceof CompiledData) {
-                $xml->addChild($data->getType()->getValue(), ' ' . $data->getValue() . ' ');
+                $xml->addChild($data->getType()->getValue(), ' ' . htmlspecialchars($data->getValue()) . ' ');
                 continue;
             }
 
             if ($data instanceof ComplexCompiledData) {
+                if ($data->isEmpty()) {
+                    $xml->addChild($data->getType()->getValue());
+                    continue;
+                }
+
                 $this->addData($data, $xml->addChild($data->getType()->getValue()));
             }
         }

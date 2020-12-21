@@ -5,7 +5,8 @@
     "myclabs/php-enum": "^1.7",
     "symfony/polyfill-php80": "^1.20",
     "ext-simplexml": "*",
-    "ext-dom": "*"
+    "ext-dom": "*",
+    "ext-libxml": "*"
   },
   "license": "MIT",
   "authors": [
