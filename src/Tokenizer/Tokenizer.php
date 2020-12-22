@@ -101,7 +101,7 @@ class Tokenizer
             }
 
             if ($this->tokensMap->isSymbol($char)) {
-                if ($token) {
+                if ($token !== '') {
                     $tokensFound[] = $token;
                 }
 

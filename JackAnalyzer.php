@@ -6,6 +6,7 @@ use JackCompiler\Parsers\LineParser;
 use JackCompiler\Tokenizer\Tokenizer;
 use JackCompiler\Tokenizer\TokensMap;
 use JackCompiler\CompileEngine\Compiler;
+use JackCompiler\Exceptions\InvalidSyntaxError;
 use JackCompiler\Exporter\CompilationXMLExporter;
 
 if (php_sapi_name() !== PHP_SAPI) {
@@ -46,5 +47,10 @@ $tokenizer = new Tokenizer(new FileReader($lineParser), new TokensMap(), $linePa
 $compiler = new Compiler();
 
 foreach ($files as $file) {
-    (new CompilationXMLExporter($compiler->handle($tokenizer, $file)))->exportToFile($generatedFileName);
+    try {
+        (new CompilationXMLExporter($compiler->handle($tokenizer, $file)))->exportToFile($generatedFileName);
+    } catch (InvalidSyntaxError $exception) {
+        echo $exception->getMessage() . PHP_EOL;
+        exit;
+    }
 }

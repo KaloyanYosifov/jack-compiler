@@ -10,6 +10,11 @@ use JackCompiler\CompileEngine\CompilationTokenExpector;
 
 class ClassCompilation extends AbstractCompilation
 {
+    /**
+     * @param TokenizedData $tokenizedData
+     * @return ComplexCompiledData
+     * @throws \JackCompiler\Exceptions\InvalidSyntaxError
+     */
     public function compile(TokenizedData $tokenizedData): ComplexCompiledData
     {
         $this->init($tokenizedData, new ComplexCompiledData($this->getCompilationType()));
