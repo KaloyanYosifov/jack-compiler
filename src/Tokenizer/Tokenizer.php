@@ -81,11 +81,16 @@ class Tokenizer
     {
         $token = '';
         $tokensFound = [];
+        $waitingForClosingQuote = false;
 
         for ($lineIndex = 0, $charactersCount = strlen($line); $lineIndex < $charactersCount; $lineIndex++) {
             $char = $line[$lineIndex];
 
-            if ($char === ' ') {
+            if ($char === '"') {
+                $waitingForClosingQuote = !$waitingForClosingQuote;
+            }
+
+            if ($char === ' ' && !$waitingForClosingQuote) {
                 if (!$token) {
                     continue;
                 }

@@ -40,7 +40,13 @@ class TermCompilation extends AbstractCompilation
             $this->eat(CompilationType::SYMBOL(), TokenType::SYMBOL(), '~|-');
             $this->add(static::create()->compile($tokenizedData));
         } else {
-            throw new InvalidSyntaxError('The expression on the right of the let statement is invalid!');
+            throw new InvalidSyntaxError(
+                sprintf(
+                    'The expression on the right of the let statement is invalid on line "%s" in "%s"!',
+                    $currentToken->getLine(),
+                    $currentToken->getFilename()
+                )
+            );
         }
 
         return $this->getComplexCompiledData();
