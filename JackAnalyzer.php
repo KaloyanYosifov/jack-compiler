@@ -48,7 +48,7 @@ $compiler = new Compiler();
 
 foreach ($files as $file) {
     try {
-        (new CompilationXMLExporter($compiler->handle($tokenizer, $file)))->exportToFile($generatedFileName);
+        (new CompilationXMLExporter($compiler->handle($tokenizer->handle($file))))->exportToFile($generatedFileName);
     } catch (InvalidSyntaxError $exception) {
         echo $exception->getMessage() . PHP_EOL;
         exit;

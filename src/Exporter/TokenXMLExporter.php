@@ -24,7 +24,10 @@ class TokenXMLExporter
              */
             $currentToken = $this->tokenizedData->currentToken();
 
-            $xml->addChild($currentToken->getType()->getValue(), ' ' . $currentToken->getValue() . ' ');
+            $xml->addChild(
+                $currentToken->getType()->getValue(),
+                ' ' . htmlspecialchars(str_replace('"', '', $currentToken->getValue())) . ' '
+            );
             $this->tokenizedData->nextToken();
         }
 

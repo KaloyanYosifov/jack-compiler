@@ -2,19 +2,18 @@
 
 namespace JackCompiler\CompileEngine;
 
-use JackCompiler\Tokenizer\Tokenizer;
+use JackCompiler\Tokenizer\TokenizedData;
 use JackCompiler\CompileEngine\Compilations\ClassCompilation;
 
 class Compiler
 {
     /**
-     * @param Tokenizer $tokenizer
-     * @param string $filename
+     * @param TokenizedData $tokenizedData
      * @return ComplexCompiledData
      * @throws \JackCompiler\Exceptions\InvalidSyntaxError
      */
-    public function handle(Tokenizer $tokenizer, string $filename): ComplexCompiledData
+    public function handle(TokenizedData $tokenizedData): ComplexCompiledData
     {
-        return ClassCompilation::create()->compile($tokenizer->handle($filename));
+        return ClassCompilation::create()->compile($tokenizedData);
     }
 }

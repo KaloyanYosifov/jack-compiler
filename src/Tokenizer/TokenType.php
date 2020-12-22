@@ -16,7 +16,7 @@ class TokenType extends Enum
 {
     private const KEYWORD = 'keyword';
     private const SYMBOL = 'symbol';
-    private const INTEGER = 'integer';
-    private const STRING = 'string';
+    private const INTEGER = 'integerConstant';
+    private const STRING = 'stringConstant';
     private const IDENTIFIER = 'identifier';
 }
