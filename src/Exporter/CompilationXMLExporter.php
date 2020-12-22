@@ -3,15 +3,20 @@
 namespace JackCompiler\Exporter;
 
 use JackCompiler\CompileEngine\CompiledData;
+use JackCompiler\CompileEngine\CompilationType;
 use JackCompiler\CompileEngine\ComplexCompiledData;
 
 class CompilationXMLExporter
 {
     protected ComplexCompiledData $complexCompiledData;
+    protected array $skipAddingTagFor = [];
 
     public function __construct(ComplexCompiledData $complexCompiledData)
     {
         $this->complexCompiledData = $complexCompiledData;
+        $this->skipAddingTagFor = [
+            CompilationType::SUBROUTINE_CALL()->getKey(),
+        ];
     }
 
     public function export(): string
@@ -53,7 +58,15 @@ class CompilationXMLExporter
 
             if ($data instanceof ComplexCompiledData) {
                 if ($data->isEmpty()) {
-                    $xml->addChild($data->getType()->getValue());
+                    $xml->addChild($data->getType()->getValue(), PHP_EOL);
+                    continue;
+                }
+
+                // if the type of the complex compiled data is of the type we want to skip
+                // because nand2 tetris expects a different format
+                if (in_array($data->getType()->getKey(), $this->skipAddingTagFor, true)) {
+                    $this->addData($data, $xml);
+
                     continue;
                 }
 
