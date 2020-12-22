@@ -5,8 +5,8 @@ use JackCompiler\Reader\FileReader;
 use JackCompiler\Parsers\LineParser;
 use JackCompiler\Tokenizer\Tokenizer;
 use JackCompiler\Tokenizer\TokensMap;
+use JackCompiler\CompileEngine\Compiler;
 use JackCompiler\Exporter\CompilationXMLExporter;
-use JackCompiler\CompileEngine\Compilations\ClassCompilation;
 
 if (php_sapi_name() !== PHP_SAPI) {
     echo 'Please run this in the command line!';
@@ -43,8 +43,8 @@ if (file_exists($generatedFileName)) {
 
 $lineParser = new LineParser();
 $tokenizer = new Tokenizer(new FileReader($lineParser), new TokensMap(), $lineParser);
+$compiler = new Compiler();
 
 foreach ($files as $file) {
-    $compiledData = ClassCompilation::create()->compile($tokenizer->handle($file));
-    (new CompilationXMLExporter($compiledData))->exportToFile($generatedFileName);
+    (new CompilationXMLExporter($compiler->handle($tokenizer, $file)))->exportToFile($generatedFileName);
 }
