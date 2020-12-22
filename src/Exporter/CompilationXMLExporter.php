@@ -52,7 +52,11 @@ class CompilationXMLExporter
          */
         foreach ($complexData as $data) {
             if ($data instanceof CompiledData) {
-                $xml->addChild($data->getType()->getValue(), ' ' . htmlspecialchars($data->getValue()) . ' ');
+                $xml->addChild(
+                    $data->getType()->getValue(),
+                    ' ' . htmlspecialchars(str_replace('"', '', $data->getValue())) . ' '
+                );
+
                 continue;
             }
 

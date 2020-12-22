@@ -36,7 +36,7 @@ class CompilationType extends Enum
     private const KEYWORD = 'keyword';
     private const SYMBOL = 'symbol';
     private const IDENTIFIER = 'identifier';
-    private const INTEGER_CONSTANT = 'intConstant';
+    private const INTEGER_CONSTANT = 'integerConstant';
     private const STRING_CONSTANT = 'stringConstant';
     private const STATEMENTS = 'statements';
     private const LET_STATEMENT = 'letStatement';
