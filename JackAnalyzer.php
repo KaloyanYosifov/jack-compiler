@@ -23,19 +23,19 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'a
 
 $baseDir = Helpers::getBaseDirFromFile($argv[1]);
 $firstFileOrDirectory = $baseDir . $argv[1];
-$generatedFileName = $baseDir . pathinfo($argv[1], PATHINFO_FILENAME) . '.vm';
+$generatedFileName = $baseDir . pathinfo($argv[1], PATHINFO_FILENAME) . '.xml';
 
 if (is_dir($firstFileOrDirectory)) {
     $files = Helpers::getFilesFromDirectory($firstFileOrDirectory, 'jack');
     // remove the single dot in the end if the user chooses the directory to translate with the `.`
     $firstFileOrDirectory = preg_replace('~\.$~', '', $firstFileOrDirectory);
-    $generatedFileName = $firstFileOrDirectory . DIRECTORY_SEPARATOR . pathinfo($firstFileOrDirectory, PATHINFO_FILENAME) . '.vm';
+    $generatedFileName = $firstFileOrDirectory . DIRECTORY_SEPARATOR . pathinfo($firstFileOrDirectory, PATHINFO_FILENAME) . '.xml';
 } else {
     $files = array_slice($argv, 1);
 }
 
 if (!$files) {
-    throw new \InvalidArgumentException('There are no vm files in this directory!');
+    throw new \InvalidArgumentException('There are no xml files in this directory!');
 }
 
 if (file_exists($generatedFileName)) {
@@ -46,11 +46,14 @@ $lineParser = new LineParser();
 $tokenizer = new Tokenizer(new FileReader($lineParser), new TokensMap(), $lineParser);
 $compiler = new Compiler();
 
+$xml = '';
 foreach ($files as $file) {
     try {
-        (new CompilationXMLExporter($compiler->handle($tokenizer->handle($file))))->exportToFile($generatedFileName);
+        $xml .= (new CompilationXMLExporter($compiler->handle($tokenizer->handle($file))))->export();
     } catch (InvalidSyntaxError $exception) {
         echo $exception->getMessage() . PHP_EOL;
         exit;
     }
 }
+
+file_put_contents(count($files) > 1 ? 'Main.xml' : $generatedFileName, $xml);

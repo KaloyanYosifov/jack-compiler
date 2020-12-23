@@ -12,7 +12,7 @@ use JackCompiler\CompileEngine\Compilations\Constants\CompilationConstants;
 
 class VariablesCompilation extends AbstractCompilation
 {
-    protected bool $typeForEveryNewVariable;
+    protected $typeForEveryNewVariable;
 
     /**
      * VariablesCompilation constructor.

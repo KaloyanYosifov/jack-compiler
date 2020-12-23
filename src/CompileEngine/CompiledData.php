@@ -4,8 +4,8 @@ namespace JackCompiler\CompileEngine;
 
 class CompiledData
 {
-    protected CompilationType $type;
-    protected string $value;
+    protected $type;
+    protected $value;
 
     public function __construct(CompilationType $type, string $value)
     {

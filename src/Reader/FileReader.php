@@ -7,7 +7,7 @@ use JackCompiler\Exceptions\FileNotFound;
 
 class FileReader
 {
-    protected LineParser $lineParser;
+    protected $lineParser;
 
     public function __construct(LineParser $lineParser)
     {

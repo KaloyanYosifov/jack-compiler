@@ -10,8 +10,8 @@ namespace JackCompiler\CompileEngine;
  */
 class ComplexCompiledData implements \IteratorAggregate
 {
-    protected CompilationType $type;
-    protected array $data = [];
+    protected $type;
+    protected $data = [];
 
     /**
      * ComplexCompiledData constructor.

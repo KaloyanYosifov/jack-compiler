@@ -10,7 +10,7 @@ use JackCompiler\CompileEngine\CompilationTokenExpector;
 
 class ExpressionCompilation extends AbstractCompilation
 {
-    protected string $operands = '+|-|*|/|&|\||<|>|=';
+    protected $operands = '+|-|*|/|&|\||<|>|=';
 
     public function compile(TokenizedData $tokenizedData): ComplexCompiledData
     {

@@ -7,9 +7,9 @@ use JackCompiler\Parsers\LineParser;
 
 class Tokenizer
 {
-    protected FileReader $fileReader;
-    protected TokensMap $tokensMap;
-    protected LineParser $lineParser;
+    protected $fileReader;
+    protected $tokensMap;
+    protected $lineParser;
 
     /**
      * Tokenizer constructor.

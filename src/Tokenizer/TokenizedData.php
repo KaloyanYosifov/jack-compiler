@@ -4,8 +4,8 @@ namespace JackCompiler\Tokenizer;
 
 class TokenizedData
 {
-    protected array $tokens = [];
-    protected int $currentTokenIndex = 0;
+    protected $tokens = [];
+    protected $currentTokenIndex = 0;
 
     public function __construct(array $tokens)
     {

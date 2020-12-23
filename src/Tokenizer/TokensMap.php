@@ -6,18 +6,18 @@ use JackCompiler\Exceptions\InvalidIdentifierName;
 
 class TokensMap
 {
-    protected array $keywords = [
+    protected $keywords = [
         'class', 'constructor', 'function', 'method',
         'field', 'static', 'var', 'int', 'char', 'boolean',
         'void', 'true', 'false', 'null', 'this', 'let', 'do',
         'if', 'else', 'while', 'return',
     ];
-    protected array $symbols = [
+    protected $symbols = [
         '{', '}', '(', ')', '[', ']', '.', ',', ';', '+', '-', '*',
         '/', '&', ',', '<', '>', '=', '~', '|',
     ];
-    protected string $allowedStartCharacters = 'abcdefghijklmnopqrstuvwxyz_';
-    protected string $allowedIdentifierCharacters = '';
+    protected $allowedStartCharacters = 'abcdefghijklmnopqrstuvwxyz_';
+    protected $allowedIdentifierCharacters = '';
 
     public function __construct()
     {

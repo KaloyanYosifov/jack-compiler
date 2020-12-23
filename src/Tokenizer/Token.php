@@ -4,10 +4,10 @@ namespace JackCompiler\Tokenizer;
 
 class Token
 {
-    protected TokenType $tokenType;
-    protected string $value;
-    protected int $line;
-    protected string $filename;
+    protected $tokenType;
+    protected $value;
+    protected $line;
+    protected $filename;
 
     /**
      * Token constructor.

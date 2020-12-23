@@ -12,9 +12,9 @@ use JackCompiler\CompileEngine\CompilationTokenExpector;
 
 abstract class AbstractCompilation implements Compilation
 {
-    private ?TokenizedData $currentTokenizedData = null;
-    private ?ComplexCompiledData $currentComplexCompiledData = null;
-    private CompilationTokenExpector $compilationTokenExpector;
+    private $currentTokenizedData = null;
+    private $currentComplexCompiledData = null;
+    private $compilationTokenExpector;
 
     public function __construct(CompilationTokenExpector $compilationTokenExpector)
     {

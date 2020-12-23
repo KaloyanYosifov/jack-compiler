@@ -10,7 +10,7 @@ use JackCompiler\CompileEngine\Compilations\AbstractCompilation;
 
 class StatementsCompilation extends AbstractCompilation
 {
-    protected array $statementTypes = [
+    protected $statementTypes = [
         'let' => LetStatementCompilation::class,
         'if' => IfStatementCompilation::class,
         'while' => WhileStatementCompilation::class,
