@@ -5,9 +5,9 @@ use JackCompiler\Reader\FileReader;
 use JackCompiler\Parsers\LineParser;
 use JackCompiler\Tokenizer\Tokenizer;
 use JackCompiler\Tokenizer\TokensMap;
+use JackCompiler\VMCompiler\VMCompiler;
 use JackCompiler\CompileEngine\Compiler;
 use JackCompiler\Exceptions\InvalidSyntaxError;
-use JackCompiler\Exporter\CompilationXMLExporter;
 
 if (php_sapi_name() !== PHP_SAPI) {
     echo 'Please run this in the command line!';
@@ -45,15 +45,14 @@ if (file_exists($generatedFileName)) {
 $lineParser = new LineParser();
 $tokenizer = new Tokenizer(new FileReader($lineParser), new TokensMap(), $lineParser);
 $compiler = new Compiler();
+$vmCompiler = new VMCompiler();
 
 foreach ($files as $file) {
     $fileToOutputTo = count($files) > 0 ? str_replace('.jack', '.xml', $file) : $generatedFileName;
     try {
-        (new CompilationXMLExporter($compiler->handle($tokenizer->handle($file))))
-            ->exportToFile($fileToOutputTo);
+        dd($vmCompiler->handle($compiler->handle($tokenizer->handle($file))));
     } catch (InvalidSyntaxError $exception) {
         echo $exception->getMessage() . PHP_EOL;
         exit;
     }
 }
-

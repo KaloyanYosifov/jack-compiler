@@ -6,10 +6,18 @@ class LineParser
 {
     public function handle(string $line): string
     {
+        static $skipLine = false;
+
         $line = trim($line);
         // skip line
         // since it is a comment
-        if (preg_match('~^(//|/\*\*)~', $line)) {
+        if (preg_match('~^(//|/\*\*)~', $line) || $skipLine) {
+            if ($line === '/**') {
+                $skipLine = true;
+            } elseif ($line === '*/') {
+                $skipLine = false;
+            }
+
             return '';
         }
 
