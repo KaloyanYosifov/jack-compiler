@@ -55,6 +55,10 @@ class SymbolTable
             }
         }
 
+        if ($this->getParent()) {
+            return $this->getParent()->findByName($name);
+        }
+
         return SymbolData::emptyObject();
     }
 }
