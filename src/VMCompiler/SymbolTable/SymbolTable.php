@@ -8,7 +8,7 @@ class SymbolTable
 {
     protected ?self $parent;
     /**
-     * @var SymbolData[]
+     * @var array
      */
     protected array $symbols = [];
 
@@ -21,7 +21,7 @@ class SymbolTable
         $this->parent = $parent;
     }
 
-    public function getParent(): self
+    public function getParent(): ?self
     {
         return $this->parent;
     }
@@ -55,8 +55,8 @@ class SymbolTable
             }
         }
 
-        if ($this->getParent()) {
-            return $this->getParent()->findByName($name);
+        if ($parent = $this->getParent()) {
+            return $parent->findByName($name);
         }
 
         return SymbolData::emptyObject();
