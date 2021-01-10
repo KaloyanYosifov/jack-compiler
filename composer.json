@@ -6,7 +6,8 @@
     "symfony/polyfill-php80": "^1.20",
     "ext-simplexml": "*",
     "ext-dom": "*",
-    "ext-libxml": "*"
+    "ext-libxml": "*",
+    "spatie/data-transfer-object": "^2.6"
   },
   "license": "MIT",
   "authors": [
